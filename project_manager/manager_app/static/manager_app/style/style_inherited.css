@@ -1,0 +1,180 @@
+.button {
+  font-size: 24px;
+  font-weight: 500;
+  padding: 20px 26px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.dialog-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+  display: none;
+  background: rgba(0, 0, 0, 0.7);
+}
+.dialog-outside-trigger {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: -1;
+  cursor: default;
+}
+.dialog-close-button {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.dialog-close-button img {
+  width: 18px;
+  height: 18px;
+  margin: auto;
+}
+.dialog-close-button:hover {
+  background-color: #EFE6D8;
+}
+.dialog-active {
+  display: flex;
+}
+.dialog-active-always {
+  display: flex;
+}
+.dialog-project-input {
+  width: 74%;
+  padding: 15px;
+  border: none;
+  border-radius: 6px;
+  background-color: #E7DFD4;
+  box-shadow: 0px 0px 40px -20px rgba(0, 0, 0, 0.25);
+  transition: all 0.4s;
+}
+.dialog-project-input:focus {
+  box-shadow: 0px 0px 40px -3px rgba(0, 0, 0, 0.25);
+  background-color: rgba(231, 223, 212, 0.137254902);
+}
+.dialog-project-input-slider {
+  -webkit-appearance: none;
+  background-color: #E7DFD4;
+  width: 320px;
+  height: 4px;
+  border-radius: 50px;
+}
+.dialog-project-input-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #CBBEAC;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  box-shadow: 0px 0px 20px -3px rgba(0, 0, 0, 0.25);
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+.dialog-project-input-slider::-webkit-slider-thumb:active {
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
+.dialog-project-count-bar {
+  display: flex;
+  justify-content: space-between;
+  width: 300px !important;
+  margin: 0 auto;
+}
+
+.max-members {
+  display: block !important;
+}
+
+.field {
+  position: relative;
+  padding: 15px 0 0;
+  margin: 0 auto;
+  margin-top: 10px;
+  width: 72%;
+}
+.field-mini {
+  width: 63% !important;
+}
+
+.field-input {
+  font-family: inherit;
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid #CBBEAC;
+  outline: 0;
+  font-size: 1.2rem;
+  color: rgb(0, 0, 0);
+  padding: 7px 5px;
+  background: #F7F1E9;
+  transition: border-color 0.2s;
+}
+.field-input-invalid {
+  border-bottom: 2px solid #F35D49 !important;
+}
+
+.field-input::-moz-placeholder {
+  color: transparent;
+}
+
+.field-input:-ms-input-placeholder {
+  color: transparent;
+}
+
+.field-input::placeholder {
+  color: transparent;
+}
+
+.field-input:-moz-placeholder-shown ~ .field-label {
+  font-size: 1.3rem;
+  cursor: text;
+  top: 23px;
+}
+
+.field-input:-ms-input-placeholder ~ .field-label {
+  font-size: 1.3rem;
+  cursor: text;
+  top: 23px;
+}
+
+.field-input:placeholder-shown ~ .field-label {
+  font-size: 1.3rem;
+  cursor: text;
+  top: 23px;
+}
+
+.field-label {
+  position: absolute;
+  top: -5px;
+  left: 5px;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: #818181;
+}
+
+.field-input:focus {
+  font-weight: 700;
+  -o-border-image: linear-gradient(to right, #F3A549, rgba(243, 164, 73, 0.631372549));
+     border-image: linear-gradient(to right, #F3A549, rgba(243, 164, 73, 0.631372549));
+  border-image-slice: 1;
+}
+
+.field-input:focus ~ .field-label {
+  position: absolute;
+  top: -5px;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: #515151;
+  font-weight: 600;
