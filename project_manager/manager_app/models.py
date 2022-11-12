@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import pre_save
+from django.conf import settings
 
 from .managers import CustomUserManager
 
@@ -21,6 +22,7 @@ class CustomUser(AbstractUser):
     second_name = models.CharField(max_length=40, blank=False, verbose_name='Nazwisko użytkownika')
 
     registration_datatime = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Data rejestracji')
+    user_avatar = models.ForeignKey(Avatar, on_delete=models.PROTECT, default=Avatar.objects.get(search_slug=settings.DEFAULT_AVATAR).id, verbose_name='Avatar użytkownika')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
