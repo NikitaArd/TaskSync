@@ -8,7 +8,7 @@
     <div class="dialog-wrapper dialog-active-always" id="project-add-window">
         <div class="dialog-registration">
             <div class="dialog-registration-title dialog-auth-title">
-                <h1>Rejestracja / <a href="_-_-_-_-_-_">Logowanie</a></h1>
+                    <h1>Rejestracja / <a href="{% url 'login_page' %}">Logowanie</a></h1>
             </div>
             <form method="post">
                 {% csrf_token %}

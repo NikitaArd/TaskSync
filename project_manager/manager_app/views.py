@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib.auth import authenticate, login
 
 # Local imports
 from .models import CustomUser
-from .forms import RegistrationForm
+from .forms import (
+        RegistrationForm,
+        LoginForm,
+        )
 
 def get_error_messages(form) -> dict:
     error_dict = dict()
@@ -41,3 +45,28 @@ def registration_page(request):
         context['error_dict'] = error_messages['error_dict']
 
     return render(request, 'manager_app/registration_page.html', context)
+
+def login_page(request):
+    ModelFormSet = LoginForm
+    form = ModelFormSet
+    
+    context = {'form': form}
+
+    if request.method == 'POST':
+
+        form = ModelFormSet(request.POST)
+        user = authenticate(email=request.POST['email'], password=request.POST['password'])
+
+        if user:
+            login(request, user)
+
+            return redirect('/')
+        
+        context['form'] = form
+        context['invalid_field'] = 'all'
+        context['error_dict'] = {'all': 'Wprowadzono błędne dane'}
+
+    return render(request, 'manager_app/login_page.html', context)
+
+
+

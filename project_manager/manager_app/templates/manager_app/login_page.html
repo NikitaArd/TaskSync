@@ -1,0 +1,41 @@
+{% extends './layout/basic.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Strona logowania{% endblock title %}
+
+{% block dialog %}
+    <div class="dialog-wrapper dialog-active-always" id="project-add-window">
+            <div class="dialog-login">
+                <div class="dialog-login-title dialog-auth-title">
+                    <h1><a href="{% url 'registration_page' %}">Rejestracja</a> / Logowanie</h1>
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="field">
+                        {% if invalid_field %}
+                            {% render_field form.email class+='field-invalid' %}
+                            <label for='email' class="field-label">{{ error_dict.all }}</label>
+                        {% else %}
+                            {{ form.email }}
+                            <label for="email" class="field-label">E-mail</label>
+                        {% endif %}
+                    </div>
+
+                    <div class="field field-mini">
+                        {% if invalid_field %}
+                            {% render_field form.password class+='field-invalid' %}
+                            <label for="password" class="field-label">Hasło</label>
+                        {% else %}
+                            {{ form.password }}
+                            <label for="password" class="field-label">Hasło</label>
+                        {% endif %}
+                    </div>
+                    <p><a href="FORGOT PASSWORD">Zapomniałeś haśło ?<a></p>
+
+                    <button class="button login-button">Zaloguj się</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock dialog %}

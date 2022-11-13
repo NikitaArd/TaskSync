@@ -5,13 +5,13 @@
 
 {% block main %}
     <div class="main">
-            <img class="main-bg" src="{% static 'manager_app/icons/Slice 1.png' %}">
+        <img class="main-bg" src="{% static 'manager_app/icons/Slice 1.png' %}">
         <h1 class="main-title">Organizacja zadań nigdy jeszcze nie była taką łatwą</h1>
         <div class="main-buttons">
             <a href="{% url 'registration_page' %}">
                <button class="button registration-button">Zarejestruj się</button>
             </a>
-            <a href="_-_-_-_-_-">
+            <a href="{% url 'login_page' %}">
                 <button class="button login-button">Zaloguj się</button>
             </a>
         </div>

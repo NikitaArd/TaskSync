@@ -55,5 +55,29 @@ class RegistrationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'second_name', 'email', 'password1', 'password2']
+        fields = ('first_name', 'second_name', 'email', 'password1', 'password2')
 
+class LoginForm(forms.ModelForm):
+
+    email = forms.EmailField(label='E-mail', error_messages={'incorrect': _('Pwrowadzono zły email')})
+    email.widget.attrs.update({
+        'type':'email',
+        'class':'field-input',
+        'placeholder':'Email',
+        'name':'email',
+        'id': 'email',
+        'required':'required',
+        })
+
+    password = forms.CharField(label='Hasło', widget=forms.PasswordInput(attrs={
+        'type':'password',
+        'class':'field-input',
+        'placeholder':'Hasło',
+        'name': 'password',
+        'id':'password',
+        'required': 'required',
+        }))
+
+    class Meta:
+        model = CustomUser
+        fields = ('email', 'password')
