@@ -1,0 +1,57 @@
+{% extends './layout/basic.html' %}
+{% load static %}
+
+{% block title %}Strona rejestracji{% endblock title %}
+
+{% block dialog %}
+    <div class="dialog-wrapper dialog-active-always" id="project-add-window">
+        <div class="dialog-registration">
+            <div class="dialog-registration-title dialog-auth-title">
+                <h1>Rejestracja / <a href="_-_-_-_-_-_">Logowanie</a></h1>
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="dialog-registration-person-data">
+                    <h2>Dane osobowe</h2>
+
+                    <div class="field">
+                        <!-- <input type="input" class="field-input" placeholder="Imię" name="name" id='name' required /> -->
+                        {{ form.first_name }}
+                        <label for="name" class="field-label">{{ form.first_name.label }}</label>
+                    </div>
+
+                    <div class="field">
+                        <!-- <input type="input" class="field-input" placeholder="Nazwisko" name="second-name" id='second-name' required /> -->
+                        {{ form.second_name }}
+                        <label for="second-name" class="field-label">{{ form.second_name.label }}</label>
+                    </div>
+                </div>
+
+                <div class="dialog-registration-accounts-data">
+                    <h2>Dane konta</h2>
+
+                    <div class="field">
+                        <!-- <input type="email" class="field-input" placeholder="Email" name="email" id='email' required /> -->
+                        {{ form.email }}
+                        <label for="email" class="field-label">{{ form.email.label }}</label>
+                    </div>
+
+                    <div class="field field-mini">
+                        <!-- <input type="password" class="field-input" placeholder="Hasło" name="password1" id='password1' required /> -->
+                        {{ form.password1 }}
+                        <label for="password1" class="field-label">{{ form.password1.label }}</label>
+                    </div>
+
+                    <div class=" field field-mini">
+                        <!-- <input type="password" class="field-input" placeholder="Hasło" name="password2" id='password2' required /> -->
+                        {{ form.password2 }}
+                        <label for="password2" class="field-label">{{ form.password2.label }}</label>
+                    </div>
+
+                    <button class="button registration-button">Zarejestruj się</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+{% endblock dialog %}
