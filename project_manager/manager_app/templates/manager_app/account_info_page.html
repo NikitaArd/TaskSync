@@ -1,0 +1,41 @@
+{% extends './layout/basic.html' %}
+{% load static %}
+
+{% block title %}Twoje konto | {{ user.username }}{% endblock title %}
+
+{% block dialog %}
+    <div class="dialog-wrapper" id="avatar-edit-window">
+        <div class="dialog-avatar-change">
+            <div class="dialog-close-button" onclick="dialogCloser('avatar-edit-window')">
+                    <img src="{% static 'manager_app/icons/close.svg' %}" alt="Zamknij">
+            </div>
+            <h1>Zmień zdjęcie profilowe</h1>
+            <form class="avatars">
+                {% for avatar in avatars %}
+                    <img id="logo {{ forloop.counter }}" src="{{ avatar.source_image.url }}" alt="logo {{ forloop.counter }}" draggable="false" class="avatar">
+                {% endfor %}
+                <button class="button" id="avatar-change-submit">Zmień</button>
+            </form>
+
+        </div>
+        <a class="dialog-outside-trigger" onclick="dialogCloser('avatar-edit-window')"></a>
+    </div>
+{% endblock dialog %}
+
+{% block main %}
+    <div class="main">
+        <div class="user">
+            <div class="user-avatar">
+                <img src="{{ user.user_avatar.source_image.url }}" alt="Twoje zdjęcie profilowe">
+                <button id="avatar-edit" onclick="dialogOpener('avatar-edit-window')"></button>
+            </div>
+            <section class="user-information">
+                <p>Email: <span>{{ user.email }}</span></p>
+                <p>Imię: <span>{{ user.first_name }}</span></p>
+                <p>Nazwisko: <span>{{ user.second_name }}</span></p>
+                <p>Data rejestracji: <span>{{ user.registration_datetime|date:"d E Y" }}</span></p>
+                <p>Ilość aktywnych projektów: <span>None</span></p>
+            </section>
+        </div>
+    </div>
+{% endblock main %}

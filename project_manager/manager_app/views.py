@@ -3,7 +3,10 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 
 # Local imports
-from .models import CustomUser
+from .models import (
+        CustomUser,
+        Avatar
+        )
 from .forms import (
         RegistrationForm,
         LoginForm,
@@ -68,5 +71,7 @@ def login_page(request):
 
     return render(request, 'manager_app/login_page.html', context)
 
+def account_info_page(request):
+    avatars = Avatar.objects.all()
 
-
+    return render(request, 'manager_app/account_info_page.html', {'avatars': avatars})

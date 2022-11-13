@@ -21,7 +21,7 @@ class CustomUser(AbstractUser):
     first_name = models.CharField(max_length=40, blank=False, verbose_name='Imię użytkownika')
     second_name = models.CharField(max_length=40, blank=False, verbose_name='Nazwisko użytkownika')
 
-    registration_datatime = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Data rejestracji')
+    registration_datetime = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Data rejestracji')
     user_avatar = models.ForeignKey(Avatar, on_delete=models.PROTECT, default=Avatar.objects.get(search_slug=settings.DEFAULT_AVATAR).id, verbose_name='Avatar użytkownika')
 
     USERNAME_FIELD = 'email'
