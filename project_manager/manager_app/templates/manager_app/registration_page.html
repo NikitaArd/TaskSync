@@ -1,5 +1,6 @@
 {% extends './layout/basic.html' %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block title %}Strona rejestracji{% endblock title %}
 
@@ -15,13 +16,11 @@
                     <h2>Dane osobowe</h2>
 
                     <div class="field">
-                        <!-- <input type="input" class="field-input" placeholder="Imię" name="name" id='name' required /> -->
                         {{ form.first_name }}
                         <label for="name" class="field-label">{{ form.first_name.label }}</label>
                     </div>
 
                     <div class="field">
-                        <!-- <input type="input" class="field-input" placeholder="Nazwisko" name="second-name" id='second-name' required /> -->
                         {{ form.second_name }}
                         <label for="second-name" class="field-label">{{ form.second_name.label }}</label>
                     </div>
@@ -31,21 +30,33 @@
                     <h2>Dane konta</h2>
 
                     <div class="field">
-                        <!-- <input type="email" class="field-input" placeholder="Email" name="email" id='email' required /> -->
-                        {{ form.email }}
-                        <label for="email" class="field-label">{{ form.email.label }}</label>
+                        {% if invalid_field == 'email' %}
+                            {% render_field form.email class+='field-invalid' %}
+                            <label for="email" class="field-label">{{ error_dict.email }}</label>
+                        {% else %}    
+                            {{ form.email }}
+                            <label for="email" class="field-label">{{ form.email.label }}</label>
+                        {% endif %}
                     </div>
 
                     <div class="field field-mini">
-                        <!-- <input type="password" class="field-input" placeholder="Hasło" name="password1" id='password1' required /> -->
-                        {{ form.password1 }}
-                        <label for="password1" class="field-label">{{ form.password1.label }}</label>
+                        {% if invalid_field == 'password2'%}
+                            {% render_field form.password1 class+='field-invalid' %}
+                            <label for="password1" class="field-label">{{ error_dict.password2 }}</label>
+                         {% else %}
+                            {{ form.password1 }}
+                            <label for="password1" class="field-label">{{ form.password1.label }}</label>
+                         {% endif %}
                     </div>
 
                     <div class=" field field-mini">
-                        <!-- <input type="password" class="field-input" placeholder="Hasło" name="password2" id='password2' required /> -->
-                        {{ form.password2 }}
-                        <label for="password2" class="field-label">{{ form.password2.label }}</label>
+                        {% if invalid_field == 'password2'%}
+                            {% render_field form.password2 class+='field-invalid' %}
+                            <label for="password2" class="field-label">{{ form.password2.label }}</label>
+                        {% else %}
+                            {{ form.password2 }}
+                            <label for="password2" class="field-label">{{ form.password2.label }}</label>
+                        {% endif %}
                     </div>
 
                     <button class="button registration-button">Zarejestruj się</button>

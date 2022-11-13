@@ -178,3 +178,8 @@
   font-size: 1rem;
   color: #515151;
   font-weight: 600;
+}
+
+.field-invalid {
+    border-bottom: 2px solid #F35D49 !important;
+}

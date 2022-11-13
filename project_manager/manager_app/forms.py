@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.utils.translation import gettext_lazy as _
 
 from .models import CustomUser
 
@@ -24,7 +25,7 @@ class RegistrationForm(UserCreationForm):
         'required':'required',
         })
 
-    email = forms.EmailField(label='E-mail')
+    email = forms.EmailField(label='E-mail', error_messages={'unique': _('Konto z takim email już instnieje')})
     email.widget.attrs.update({
         'type':'email',
         'class':'field-input',
@@ -41,7 +42,7 @@ class RegistrationForm(UserCreationForm):
         'name': 'password1',
         'id':'password1',
         'required': 'required',
-        }))
+        }), error_messages={'min_length': _('Hasło musi zawierać conajmniej 8 znaków')})
 
     password2 = forms.CharField(label='Powtórz hasło', widget=forms.PasswordInput(attrs={
         'type':'password',
@@ -50,7 +51,7 @@ class RegistrationForm(UserCreationForm):
         'name': 'password2',
         'id':'password2',
         'required': 'required',
-        }))
+        }), error_messages={'min_length': _('Hasło musi zawierać conajmniej 8 znaków')})
 
     class Meta:
         model = CustomUser
