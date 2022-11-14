@@ -1,3 +1,12 @@
+function getCookie(name){
+    const value = `;${docuemnt.cookie}`;
+    const clear_cookies = value.split(`;${name}`);
+    if (clear_cookies.lenght === 2) return clear_cookies.pop().split(';').shift();
+}
+
+const user_id = getCookie('user_uuid')
+const csrf_token = getCookie('csrf_token')
+
 $(function(){
     $('#menuToggle').on('click', function(){
         $('#menu').toggleClass('menu-open');
@@ -54,8 +63,30 @@ function open_more(id) {
     card_elem.parentElement.classList.toggle('projects-card-wrapper-active');
 }
 
+$(function(){
+        $('#avatar-change-submit').on('click', function(){
+                avatar_id = document.getElementByClassName('avatars-active')[0];
+                channge_avatar_ajax(avatar_id);
+        })
+})
 
-// This is AJAX request function in future
-function change_avatar_ajax(avatar_uuid) {
+function change_avatar_ajax(avatar_id) {
+    $.ajax({
+            type: 'POST',
+            url: '/ajax/change/avatar/',
+            data: {
+                    user_uuid: user_uuid,
+                    avatar_id: avatar_id,
+                    csrfmiddlewaretoken: csrf_token,
+            }
+
+            success: function (response) {
+                    console.log(response)
+            }
+
+            error: function (response) {
+                    alert(response)
+            }
+    })
     console.log(`Doing request with ${avatar_uuid} avatar`)
 }
