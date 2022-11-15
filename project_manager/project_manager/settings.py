@@ -140,13 +140,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/avatars')
 
 DEFAULT_AVATAR = 'slug_avatar_1'
 
-AVATAR_DICT = {
-        'avatar_1': 'slug_avatar_1',
-        'avatar_2': 'slug_avatar_2',
-        'avatar_3': 'slug_avatar_3',
-        'avatar_4': 'slug_avatar_4',
-        }
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

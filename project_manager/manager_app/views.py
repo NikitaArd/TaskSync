@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
+from django.urls import reverse
 
 # Local imports
 from .models import (
@@ -39,7 +40,7 @@ def registration_page(request):
 
         if form.is_valid():
             form.save() 
-            return redirect('/')
+            return redirect(reverse('title_page'))
 
         error_messages = get_error_messages(form)
         
@@ -63,7 +64,7 @@ def login_page(request):
         if user:
             login(request, user)
 
-            return redirect('/')
+            return redirect(reverse('title_page'))
         
         context['form'] = form
         context['invalid_field'] = 'all'
@@ -72,6 +73,26 @@ def login_page(request):
     return render(request, 'manager_app/login_page.html', context)
 
 def account_info_page(request):
-    avatars = Avatar.objects.all()
+    
+    mode = request.GET.get('mode', '')
+    avatar_slug = request.GET.get('avatar', '')
 
-    return render(request, 'manager_app/account_info_page.html', {'avatars': avatars})
+    if mode == 'change':
+        cur_user = CustomUser.objects.get(id=request.user.id)
+        try:
+            cur_user.user_avatar = Avatar.objects.get(search_slug=avatar_slug)
+        except Avatar.DoesNotExist:
+            return redirect(reverse('account_info_page'))
+        cur_user.save()
+
+        return redirect(reverse('account_info_page'))
+
+    avatars = Avatar.objects.all()
+    avatar_change_url = '{}{}'.format(reverse('account_info_page'), '?mode=change&avatar=') 
+
+    context = {
+            'avatars': avatars,
+            'avatar_change_url': avatar_change_url,
+            }
+
+    return render(request, 'manager_app/account_info_page.html', context)

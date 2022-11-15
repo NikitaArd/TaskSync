@@ -12,9 +12,8 @@
             <h1>Zmień zdjęcie profilowe</h1>
             <form class="avatars">
                 {% for avatar in avatars %}
-                    <img id="logo {{ forloop.counter }}" src="{{ avatar.source_image.url }}" alt="logo {{ forloop.counter }}" draggable="false" class="avatar">
+                    <a href="{{ avatar_change_url}}{{ avatar.search_slug }}"><img id="avatar-{{ forloop.counter }}" src="{{ avatar.source_image.url }}" alt="avatar {{ forloop.counter }}" draggable="false" class="avatar"></a>
                 {% endfor %}
-                <button class="button" id="avatar-change-submit">Zmień</button>
             </form>
 
         </div>

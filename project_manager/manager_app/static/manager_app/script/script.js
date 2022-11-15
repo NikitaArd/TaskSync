@@ -1,11 +1,11 @@
-function getCookie(name){
-    const value = `;${docuemnt.cookie}`;
-    const clear_cookies = value.split(`;${name}`);
-    if (clear_cookies.lenght === 2) return clear_cookies.pop().split(';').shift();
-}
+// function getCookie(name){
+//    const value = `;${docuemnt.cookie}`;
+//    const clear_cookies = value.split(`;${name}`);
+//    if (clear_cookies.lenght === 2) return clear_cookies.pop().split(';').shift();
+//}
 
-const user_id = getCookie('user_uuid')
-const csrf_token = getCookie('csrf_token')
+//const user_id = getCookie('user_uuid')
+//const csrf_token = getCookie('csrf_token')
 
 $(function(){
     $('#menuToggle').on('click', function(){
@@ -64,29 +64,10 @@ function open_more(id) {
 }
 
 $(function(){
-        $('#avatar-change-submit').on('click', function(){
-                avatar_id = document.getElementByClassName('avatars-active')[0];
-                channge_avatar_ajax(avatar_id);
-        })
-})
+    $('.avatar').on('click', function(){
+        submit_button = document.getElementById('avatar-change-submit-href')
+        avatar_id = document.getElementsByClassName('avatars-active')[0].id;
 
-function change_avatar_ajax(avatar_id) {
-    $.ajax({
-            type: 'POST',
-            url: '/ajax/change/avatar/',
-            data: {
-                    user_uuid: user_uuid,
-                    avatar_id: avatar_id,
-                    csrfmiddlewaretoken: csrf_token,
-            }
-
-            success: function (response) {
-                    console.log(response)
-            }
-
-            error: function (response) {
-                    alert(response)
-            }
+        submit_button.href = `accounts/information/change/avatar/${avatar_id}`;
     })
-    console.log(`Doing request with ${avatar_uuid} avatar`)
-}
+})
