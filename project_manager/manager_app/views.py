@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import (
+        authenticate,
+        login,
+        logout,
+        )
 from django.urls import reverse
 
 from django.conf import settings
@@ -77,6 +81,12 @@ def login_page(request):
         context['error_dict'] = {'all': 'Wprowadzono błędne dane'}
 
     return render(request, 'manager_app/login_page.html', context)
+
+def logout_page(request):
+
+    logout(request)
+
+    return redirect(reverse('login_page'))
 
 def account_info_page(request):
     

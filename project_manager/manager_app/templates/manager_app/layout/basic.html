@@ -37,6 +37,9 @@
             <a href="{% url 'title_page' %}"><p class="text-1">Strona główna</p></a>
             <a href="{% url 'account_info_page' %}"><p class="text-1">Twoje konto</p></a>
             <a href="#"><p class="text-1">Galeria projektów</p></a>
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'logout' %}"><p class="text-1">Wyloguj się</p></a>
+            {% endif %}
             <a href="#"><p class="text-1">Repo</p></a>
         </div>
         <div id="menuToggle">
