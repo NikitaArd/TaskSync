@@ -1,5 +1,9 @@
-from django.contrib.auth.forms import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import (
+        forms,
+        UserCreationForm,
+        PasswordResetForm,
+        SetPasswordForm,
+        )
 from django.utils.translation import gettext_lazy as _
 
 from .models import CustomUser
@@ -81,3 +85,39 @@ class LoginForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ('email', 'password')
+
+class CustomPasswordResetForm(PasswordResetForm):
+    email = forms.EmailField(label='E-mail')
+    email.widget.attrs.update({
+         'type':'email',
+         'class':'field-input',
+         'placeholder':'Email',
+         'name':'email',
+         'id':'email',
+         'required':'required',
+         })
+
+    class Meta:
+        fields = ('email')
+
+class NewPasswordSetForm(SetPasswordForm):
+    new_password1 = forms.CharField(label='Hasło', widget=forms.PasswordInput(attrs={
+        'type':'password',
+        'class':'field-input',
+        'placeholder':'Hasło',
+        'name': 'password1',
+        'id':'password1',
+        'required': 'required',
+        }), error_messages={'min_length': _('Hasło musi zawierać conajmniej 8 znaków')})
+
+    new_password2 = forms.CharField(label='Powtórz hasło', widget=forms.PasswordInput(attrs={
+        'type':'password',
+        'class':'field-input',
+        'placeholder':'Powtórz Hasło',
+        'name': 'password2',
+        'id':'password2',
+        'required': 'required',
+        }), error_messages={'min_length': _('Hasło musi zawierać conajmniej 8 znaków')})
+
+    class Meta:
+        fields = ['password1', 'password2']

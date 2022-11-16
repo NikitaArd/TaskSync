@@ -3,6 +3,10 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.urls import reverse
 
+from django.conf import settings
+
+from django.contrib.auth.views import PasswordResetConfirmView
+
 # Local imports
 from .models import (
         CustomUser,
@@ -11,7 +15,9 @@ from .models import (
 from .forms import (
         RegistrationForm,
         LoginForm,
+        NewPasswordSetForm,
         )
+
 
 def get_error_messages(form) -> dict:
     error_dict = dict()
@@ -96,3 +102,25 @@ def account_info_page(request):
             }
 
     return render(request, 'manager_app/account_info_page.html', context)
+
+
+class PasswordResetConfirmViewWithErrors(PasswordResetConfirmView):
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.request.method == 'POST':
+
+            form = context['form']
+
+            if form.is_valid():
+                context['invalid_field'] = ''
+                context['error_dict'] = {}
+            else:
+                error_messages = get_error_messages(form)
+
+                context['invalid_field'] = error_messages['invalid_field']
+                context['error_dict'] = error_messages['error_dict']
+
+        return context
+
