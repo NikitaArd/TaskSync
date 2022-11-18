@@ -6,6 +6,7 @@ from django.contrib.auth import (
         logout,
         )
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 from django.conf import settings
 
@@ -88,6 +89,7 @@ def logout_page(request):
 
     return redirect(reverse('login_page'))
 
+@login_required(login_url='login/')
 def account_info_page(request):
     
     mode = request.GET.get('mode', '')
