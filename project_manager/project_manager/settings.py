@@ -116,6 +116,9 @@ SOCIALACCOUNT_LOGIN_ON_GET = True
 
 AUTH_USER_MODEL = 'manager_app.CustomUser'
 
+ANONYMOUS_REDIRECT = 'account_info_page'
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 

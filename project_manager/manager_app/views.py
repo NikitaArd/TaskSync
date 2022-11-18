@@ -22,7 +22,9 @@ from .forms import (
         LoginForm,
         NewPasswordSetForm,
         )
-
+from .decorators import (
+        anonymous_required
+        )
 
 def get_error_messages(form) -> dict:
     error_dict = dict()
@@ -38,6 +40,7 @@ def get_error_messages(form) -> dict:
 def main_page(request): 
     return render(request, 'manager_app/title_page.html', {})
 
+@anonymous_required
 def registration_page(request):
     ModelFormSet = RegistrationForm
     form = ModelFormSet
@@ -61,6 +64,7 @@ def registration_page(request):
 
     return render(request, 'manager_app/registration_page.html', context)
 
+@anonymous_required
 def login_page(request):
     ModelFormSet = LoginForm
     form = ModelFormSet
