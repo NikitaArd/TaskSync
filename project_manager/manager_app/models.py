@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.db.models.signals import pre_save
 from django.conf import settings
+from django.db.models.signals import (
+        pre_save,
+        post_save,
+        )
 
 import uuid
 
@@ -42,7 +45,7 @@ class Project(models.Model):
     name = models.CharField(max_length=30)
 
     def __str__(self) -> str:
-        return name
+        return self.name
 
     def check_user_is_member(self, user_uuid):
 
@@ -51,10 +54,31 @@ class Project(models.Model):
 
         return False
 
+class MemberPool(models.Model):
+    project = models.OneToOneField(Project, on_delete=models.CASCADE, null=True)
+    members = models.ManyToManyField(CustomUser)
+
+    def user_delete(self, user_uuid):
+        try:
+            self.members.remove(uuid=user_uuid)
+            self.save()
+            return True
+        except Exception:
+            return False
+
 # All Signals
 
 # User signals
 def pre_save_user_dispatcher(sender, **kwargs):
     kwargs['instance'].username = '{} {}'.format(kwargs['instance'].first_name, kwargs['instance'].second_name)
 
+# Project signals
+def post_save_project_member_creator(sender, **kwargs):
+    if kwargs['created']:
+        new_member_pool = MemberPool(project=kwargs['instance'])
+        new_member_pool.save()
+        new_member_pool.members.add(kwargs['instance'].owner)
+
+
+post_save.connect(post_save_project_member_creator, sender=Project)
 pre_save.connect(pre_save_user_dispatcher, sender=CustomUser)
