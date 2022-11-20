@@ -6,9 +6,15 @@ from .models import (
         Avatar,
         Project,
         MemberPool,
+        Column,
+        Task,
+        TasksSeq,
         )
 
 admin.site.register(CustomUser)
 admin.site.register(Avatar)
 admin.site.register(Project)
 admin.site.register(MemberPool)
+admin.site.register(Column)
+admin.site.register(Task)
+admin.site.register(TasksSeq)
