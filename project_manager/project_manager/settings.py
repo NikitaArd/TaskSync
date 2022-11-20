@@ -117,6 +117,7 @@ SOCIALACCOUNT_LOGIN_ON_GET = True
 AUTH_USER_MODEL = 'manager_app.CustomUser'
 
 ANONYMOUS_REDIRECT = 'account_info_page'
+LOGIN_URL = '/login/'
 
 
 # Internationalization

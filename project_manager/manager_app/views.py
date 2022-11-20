@@ -70,7 +70,7 @@ def login_page(request):
     form = ModelFormSet
     
     context = {'form': form}
-
+    
     if request.method == 'POST':
 
         form = ModelFormSet(request.POST)
@@ -79,7 +79,7 @@ def login_page(request):
         if user:
             login(request, user)
 
-            return redirect(reverse('title_page'))
+            return redirect(reverse('account_info_page'))
         
         context['form'] = form
         context['invalid_field'] = 'all'
@@ -93,7 +93,7 @@ def logout_page(request):
 
     return redirect(reverse('login_page'))
 
-@login_required(login_url='login/')
+@login_required
 def account_info_page(request):
     
     mode = request.GET.get('mode', '')
