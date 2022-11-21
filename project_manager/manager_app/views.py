@@ -15,7 +15,12 @@ from django.contrib.auth.views import PasswordResetConfirmView
 # Local imports
 from .models import (
         CustomUser,
-        Avatar
+        Avatar,
+        Project,
+        MemberPool,
+        Column,
+        Task,
+        TasksSeq,
         )
 from .forms import (
         RegistrationForm,
@@ -119,6 +124,15 @@ def account_info_page(request):
 
     return render(request, 'manager_app/account_info_page.html', context)
 
+@login_required
+def projects_menu(request):
+    member_projects = Project.objects.filter(memberpool__members__in=str(request.user.id))
+
+    context = {
+            'member_projects': member_projects,
+            }
+
+    return render(request, 'manager_app/projects_menu.html', context)
 
 class PasswordResetConfirmViewWithErrors(PasswordResetConfirmView):
 

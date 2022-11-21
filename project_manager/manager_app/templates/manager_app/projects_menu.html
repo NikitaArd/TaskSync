@@ -1,0 +1,54 @@
+{% extends './layout/basic.html' %}
+{% load static  %}
+{% load widget_tweaks %}
+
+{% block title %}Menu projektów{% endblock title %}
+
+{% block dialog %}
+
+{% endblock dialog %}
+
+{% block main %}
+    <div class="main">
+        <div class="projects">
+            <div class="projects-designation">
+                <section>
+                    <div class="projects-organizer"></div> <a href="#"> - jesteś organizatorem</a>
+                </section>
+
+                <section>
+                    <div class="projects-member"></div> <a href="##"> - jesteś uczęstnikiem</a>
+                </section>
+            </div>
+            <section class="projects-menu">
+                {% for project in member_projects %}
+                <div class="projects-card-wrapper">
+                        {% if project.owner == request.user %}
+                            <div class="projects-card projects-card-owner" id="card-{{ project.uuid }}">
+                        {% else %}
+                            <div class="projects-card projects-card-member" id="card-{{ project.uuid }}">
+                        {% endif %}
+                        <h1>{{ project.name }}</h1>
+                        <p>Column: 5</p>
+                        <p>Twórco: {{ project.owner.username }}</p>
+                        <div class="more-button" onclick="open_more('{{ project.uuid }}')">
+                            <img src="{% static 'manager_app/icons/More.svg' %}">
+                        </div>
+
+                    </div>
+                    <section class="card-more" id="card_more-{{ project.uuid }}">
+                        <button onclick="dialogOpener('project-settings-window')">
+                            <img src="{% static 'manager_app/icons/settings.svg' %}">Ustawienia
+                        </button>
+                    </section>
+                </div>
+                {% endfor %}
+                <div class="projects-card-wrapper">
+                    <div class="projects-add">
+                            <img src="{% static 'manager_app/icons/Add project.svg' %}" alt="+ dodaj nowy project" id="add-new-project" onclick="dialogOpener('project-add-window')">
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div> 
+{% endblock main %}
