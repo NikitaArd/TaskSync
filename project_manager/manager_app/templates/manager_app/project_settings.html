@@ -1,0 +1,76 @@
+{% extends './layout/basic.html' %}
+{% load static %}
+
+{% block title %}Ustawienia projektu {{ project.name }}{% endblock title %}
+
+{% block dialog %}
+    <div class="dialog-wrapper dialog-active-always" id="project-settings-window">
+        <div class="dialog-project-settings">
+            <a href={% url 'projects_menu' %}>
+            <div class="dialog-close-button" onclick="dialogCloser('project-settings-window')">
+                    <img src="{% static 'manager_app/icons/close.svg' %}" alt="Zamknij">
+            </div>
+            </a>
+            <h1>Ustawienia projektu</h1>
+            <section>
+                <form method='POST' class="dialog-project-settings-main">
+                    {% csrf_token %}
+                    <div class="field">
+                            <input type="input" class="field-input field-input" value='{{ project.name }}' placeholder="Imię" name="name" id='name' required />
+                        <label for="name" class="field-label">Nazwa projetku</label>
+                    </div>
+                    <section class="max-members">
+                        <h3>Maksymalna ilośc uczęstników</h3>
+                        <input name='max_members' class="dialog-project-input-slider" type="range" min="1" max="8" value="{{ project.max_members }}">
+                        <div class="dialog-project-count-bar">
+                            <p>1</p>
+                            <p>2</p>
+                            <p>3</p>
+                            <p>4</p>
+                            <p>5</p>
+                            <p>6</p>
+                            <p>7</p>
+                            <p>8</p>
+                        </div>
+                    </section>
+                    {% if project.owner == request.user %}
+                    <div class="dialog-project-settings-buttons">
+                            <a href="{% url 'project_delete' project.uuid %}"><button type="button" class="button delete-button">Usuń</button></a>
+                        <button type='submit' class="button registration-button">Zapisz</button>
+                    </div>
+                    {% endif %}
+                </form>
+
+                <div class="dialog-project-settings-user">
+                    {% for member in members %}
+                    <div class="dialog-project-settings-user-item">
+                        <span>
+                            <img src="{{ member.user_avatar.source_image.url }}" alt="user name">
+                        </span>
+                        <p>{{ member.username }}</p>
+                        <button>
+                            <img src="{% static 'manager_app/icons/close.svg' %}" alt="Delete user">
+                        </button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock dialog %}
+
+{% block main %}
+<div class="main">
+    <div class="projects">
+        <div class="projects-designation">
+            <section>
+                <div class="projects-organizer"></div> <a href="#"> - jesteś organizatorem</a>
+            </section>
+
+            <section>
+                <div class="projects-member"></div> <a href="##"> - jesteś uczęstnikiem</a>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock main %}

@@ -13,6 +13,8 @@ from .views import (
         logout_page,
         account_info_page,
         projects_menu,
+        project_settings,
+        project_delete,
         PasswordResetConfirmViewWithErrors
         )
 
@@ -23,6 +25,8 @@ urlpatterns = [
         path('logout/', logout_page, name='logout'),
         path('accounts/information/', account_info_page, name='account_info_page'),
         path('menu/', projects_menu, name='projects_menu'),
+        path('project/settings/<project_uuid>/', project_settings, name='project_settings'),
+        path('project/delete/<project_uuid>/', project_delete, name='project_delete'),
 
         # Password reset URLs
 

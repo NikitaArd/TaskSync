@@ -69,7 +69,7 @@
                     </div>
                     <section class="card-more" id="card_more-{{ project.uuid }}">
                         <button onclick="dialogOpener('project-settings-window')">
-                            <img src="{% static 'manager_app/icons/settings.svg' %}">Ustawienia
+                             <a href='{% url 'project_settings' project.uuid %}'><img src="{% static 'manager_app/icons/settings.svg' %}">Ustawienia</a>
                         </button>
                     </section>
                 </div>

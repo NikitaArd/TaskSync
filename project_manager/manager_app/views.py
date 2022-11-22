@@ -55,7 +55,7 @@ def registration_page(request):
             }
 
     if request.method == 'POST':
-        form = ModelFormSet(request.POST)
+        form = RegistrationForm(request.POST)
 
         if form.is_valid():
             form.save() 
@@ -77,7 +77,7 @@ def login_page(request):
     
     if request.method == 'POST':
 
-        form = ModelFormSet(request.POST)
+        form = LoginForm(request.POST)
         user = authenticate(email=request.POST['email'], password=request.POST['password'])
 
         if user:
@@ -159,6 +159,53 @@ def projects_menu(request):
             }
 
     return render(request, 'manager_app/projects_menu.html', context)
+
+@login_required
+def project_settings(request, project_uuid):
+    try:
+        project = Project.objects.get(uuid=project_uuid)
+    except Project.DoesNotExist:
+        return redirect(reverse('projects_menu'))
+    
+    form = ProjectCreateForm
+
+    if request.method == 'POST':
+        form = ProjectCreateForm(request.POST)
+   
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            max_members = form.cleaned_data['max_members']
+
+            if not project.name == name or not project.max_members == max_members:
+
+                project.name = name
+                project.max_members = max_members
+                project.save()
+
+            return redirect(reverse('projects_menu'))
+
+    
+    members = project.memberpool.members.all()
+
+    context = {
+            'project': project,
+            'members': members,
+            'form': form,
+            }
+
+    return render(request, 'manager_app/project_settings.html', context)
+
+@login_required
+def project_delete(request, project_uuid):
+    try:
+        project = Project.objects.get(uuid=project_uuid)
+    except Project.DoesNotExist:
+        return redirect(reverse('projects_menu'))
+
+    if project.owner == request.user:
+        project.delete()
+
+    return redirect(reverse('projects_menu'))
 
 class PasswordResetConfirmViewWithErrors(PasswordResetConfirmView):
 
