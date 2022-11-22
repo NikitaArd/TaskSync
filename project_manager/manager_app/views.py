@@ -26,6 +26,7 @@ from .forms import (
         RegistrationForm,
         LoginForm,
         NewPasswordSetForm,
+        ProjectCreateForm,
         )
 from .decorators import (
         anonymous_required
@@ -47,8 +48,7 @@ def main_page(request):
 
 @anonymous_required
 def registration_page(request):
-    ModelFormSet = RegistrationForm
-    form = ModelFormSet
+    form = RegistrationForm
 
     context = {
             'form': form,
@@ -71,9 +71,8 @@ def registration_page(request):
 
 @anonymous_required
 def login_page(request):
-    ModelFormSet = LoginForm
-    form = ModelFormSet
-    
+    form = LoginForm
+
     context = {'form': form}
     
     if request.method == 'POST':
@@ -126,10 +125,37 @@ def account_info_page(request):
 
 @login_required
 def projects_menu(request):
-    member_projects = Project.objects.filter(memberpool__members__in=str(request.user.id))
+    form = ProjectCreateForm
 
+    if request.method == 'POST':
+        form = ProjectCreateForm(request.POST)
+
+        if form.is_valid():
+            new_project = Project(
+                    name=form.cleaned_data['name'],
+                    max_members=form.cleaned_data['max_members'],
+                    owner=request.user,
+                    )
+            
+            new_project.save()
+
+            return redirect(reverse('projects_menu'))
+
+    mode = request.GET.get('mode', '')
+    option = request.GET.get('option', '')
+
+    projects = Project.objects.filter(memberpool__members__in=str(request.user.id))
+
+    if mode == 'sort' and option:
+        
+        if option == 'own':
+            projects = Project.objects.filter(owner=request.user)
+        # elif option == 'member':
+            # projects = 
+    
     context = {
-            'member_projects': member_projects,
+            'projects': projects,
+            'form': form,
             }
 
     return render(request, 'manager_app/projects_menu.html', context)

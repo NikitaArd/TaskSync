@@ -5,7 +5,38 @@
 {% block title %}Menu projektów{% endblock title %}
 
 {% block dialog %}
-
+    <div class="dialog-wrapper" id="project-add-window">
+        <div class="dialog-project-create">
+            <div class="dialog-close-button" onclick="dialogCloser('project-add-window')">
+                <img src="{% static 'manager_app/icons/close.svg' %}" alt="Zamknij">
+            </div>
+            <h1>Nowy projekt</h1>
+            <form method="post">
+                {% csrf_token %}
+                <section class="project-name">
+                    <h3>Nazwa projektu</h3>
+                    {{ form.name }}
+                </section>
+                </br>
+                <section class="max-members">
+                    <h3>Maksymalna ilośc uczęstników</h3>
+                    <input name='max_members' class="dialog-project-input-slider" type="range" min="1" max="8" value="2">
+                    <div class="dialog-project-count-bar">
+                        <p>1</p>
+                        <p>2</p>
+                        <p>3</p>
+                        <p>4</p>
+                        <p>5</p>
+                        <p>6</p>
+                        <p>7</p>
+                        <p>8</p>
+                    </div>
+                </section>
+                <button class="button" id="project-create-submit">Dodaj</button>
+            </form>
+        </div>
+        <a class="dialog-outside-trigger" onclick="dialogCloser('project-add-window')"></a>
+    </div>
 {% endblock dialog %}
 
 {% block main %}
@@ -21,7 +52,7 @@
                 </section>
             </div>
             <section class="projects-menu">
-                {% for project in member_projects %}
+                {% for project in projects %}
                 <div class="projects-card-wrapper">
                         {% if project.owner == request.user %}
                             <div class="projects-card projects-card-owner" id="card-{{ project.uuid }}">
@@ -29,7 +60,7 @@
                             <div class="projects-card projects-card-member" id="card-{{ project.uuid }}">
                         {% endif %}
                         <h1>{{ project.name }}</h1>
-                        <p>Column: 5</p>
+                        <p>Maks. uczęstników: {{ project.max_members }}</p>
                         <p>Twórco: {{ project.owner.username }}</p>
                         <div class="more-button" onclick="open_more('{{ project.uuid }}')">
                             <img src="{% static 'manager_app/icons/More.svg' %}">

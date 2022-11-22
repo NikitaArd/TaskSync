@@ -45,6 +45,7 @@ class Project(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, db_index=True)
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
+    max_members = models.IntegerField(default=2)
 
     def __str__(self) -> str:
         return self.name

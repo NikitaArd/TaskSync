@@ -6,7 +6,10 @@ from django.contrib.auth.forms import (
         )
 from django.utils.translation import gettext_lazy as _
 
-from .models import CustomUser
+from .models import (
+        CustomUser,
+        Project,
+        )
 
 class RegistrationForm(UserCreationForm):
     first_name = forms.CharField(label='Imię')
@@ -121,3 +124,23 @@ class NewPasswordSetForm(SetPasswordForm):
 
     class Meta:
         fields = ['password1', 'password2']
+
+class ProjectCreateForm(forms.Form):
+    name = forms.CharField(max_length=30)
+    name.widget.attrs.update({
+        'class': 'dialog-project-input',
+        'id': 'dialog-project-input',
+        'value': ''
+        })
+
+    max_members = forms.IntegerField(min_value=1, max_value=8)
+    max_members.widget.attrs.update({
+        'class': 'dialog-project-input-slider',
+        'type': 'range',
+        'min': '1',
+        'max': '8', 
+        'value': '2',
+        })
+
+    class Meta:
+        fields = ['name', 'max_members']
