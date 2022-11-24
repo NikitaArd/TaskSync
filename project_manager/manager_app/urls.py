@@ -18,6 +18,11 @@ from .views import (
         PasswordResetConfirmViewWithErrors
         )
 
+from .ajax_views import (
+        delete_user_from_project,
+        add_user_to_project,
+        )
+
 urlpatterns = [
         path('', main_page, name='title_page'),
         path('registration/', registration_page, name='registration_page'),
@@ -27,6 +32,11 @@ urlpatterns = [
         path('menu/', projects_menu, name='projects_menu'),
         path('project/settings/<project_uuid>/', project_settings, name='project_settings'),
         path('project/delete/<project_uuid>/', project_delete, name='project_delete'),
+
+        # Ajax URLs
+
+        path('project/settings/<project_uuid>/ajax/delete_user/', delete_user_from_project, name='ajax_delete_user_from_project'),
+        path('project/settings/<project_uuid>/ajax/add_user/', add_user_to_project, name='ajax_add_user_to_project'),
 
         # Password reset URLs
 

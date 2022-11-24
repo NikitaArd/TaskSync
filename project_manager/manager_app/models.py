@@ -48,7 +48,7 @@ class Project(models.Model):
     max_members = models.IntegerField(default=2)
 
     def __str__(self) -> str:
-        return self.name
+        return '{} | {}'.format(self.name, self.owner.username)
 
     def check_user_is_member(self, user_uuid):
 
@@ -64,13 +64,29 @@ class MemberPool(models.Model):
     def __str__(self) -> str:
         return '{} Pool'.format(self.project.name)
 
-    def user_delete(self, user_uuid):
+    def user_delete(self, user_object):
+        
+        if user_object != self.project.owner:
+            try:
+                self.members.remove(user_object)
+                self.save()
+                return True
+            except Exception as e:
+                
+                return False
+
+        return False
+
+    def user_add(self, user_object):
+        
         try:
-            self.members.remove(uuid=user_uuid)
+            self.members.add(user_object)
             self.save()
             return True
-        except Exception:
+        except Exception as e:
+            print(e)
             return False
+        
 
 class Column(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, db_index=True)

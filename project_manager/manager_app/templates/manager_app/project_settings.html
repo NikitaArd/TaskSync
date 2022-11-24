@@ -47,16 +47,24 @@
                         <span>
                             <img src="{{ member.user_avatar.source_image.url }}" alt="user name">
                         </span>
-                        <p>{{ member.username }}</p>
-                        <button>
-                            <img src="{% static 'manager_app/icons/close.svg' %}" alt="Delete user">
-                        </button>
+                        <p id='{{ member.uuid }}'>{{ member.username }}</p>
+                        <button id="delete-user-from-project"></button>
                     </div>
                     {% endfor %}
+                    {% if project.owner == request.user %}
+                    <div class="dialog-project-settings-user-item dialog-project-settings-user-form" id="add-user-form">
+                        <input type="text" placeholder="E-mail" id="add-user-form-input">
+                        <button id="add-user-to-project"></button>
+                    </div>
+                    <div class="dialog-project-settings-user-add" id="add-user-button">
+                         <img src="{% static 'manager_app/icons/Add User.svg' %}">
+                    </div> 
+                    {% endif %}
                 </div>
             </section>
         </div>
     </div>
+    {{ project.uuid|json_script:"json-project-uuid" }}
 {% endblock dialog %}
 
 {% block main %}

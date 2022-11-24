@@ -2,12 +2,13 @@
   outline: none !important;
 }
 
-a:-webkit-any-link {
-  text-decoration: none;
-}
-
 h1, h2, h3, p {
   color: #515151;
+}
+
+a:-webkit-any-link {
+  color: inherit !important;
+  text-decoration: none;
 }
 
 body {
@@ -461,7 +462,11 @@ header .logo img {
   height: 21px;
   padding: 0;
   border: none;
-  background: transparent;
+  background-color: none;
+  background-image: url("../icons/close.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   margin: auto 0;
   opacity: 0;
   cursor: pointer;
@@ -471,8 +476,38 @@ header .logo img {
   width: inherit;
   width: inherit;
 }
+.dialog-project-settings-user-item input {
+  background-color: transparent;
+  -webkit-appearance: none;
+  border: none;
+  height: 80%;
+  width: 80%;
+  margin: 7px 0;
+}
+.dialog-project-settings-user-form {
+  display: none;
+}
 .dialog-project-settings-user-item:hover button {
   opacity: 1;
+}
+.dialog-project-settings-user-add {
+  border: 2px dashed #ED8000;
+  border-radius: 5px;
+  padding: 15px 5% 15px 8%;
+  opacity: 0;
+  display: flex;
+  transition: all 0.4s;
+  cursor: pointer;
+}
+.dialog-project-settings-user-add img {
+  margin: auto auto;
+}
+.dialog-project-settings-user-add:hover {
+  opacity: 1;
+}
+
+#add-user-to-project {
+  background-image: url("../icons/accept.svg") !important;
 }
 
 .delete-button {
@@ -604,3 +639,4 @@ header .logo img {
 .avatars-active {
   outline: 4px solid #7AC8EA !important;
   outline-offset: -4px;
+}
