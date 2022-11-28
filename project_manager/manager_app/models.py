@@ -57,6 +57,22 @@ class Project(models.Model):
 
         return False
 
+    def change_project_settings(self, new_project_name:str, new_max_members:int) -> bool:
+
+        if not self.name == new_project_name or not self.max_members == new_max_members:
+
+            if new_max_members < self.memberpool.members.count():
+                
+                return False
+
+            self.name = new_project_name
+            self.max_members = new_max_members
+            self.save()
+
+        return True
+
+
+
 class MemberPool(models.Model):
     project = models.OneToOneField(Project, on_delete=models.CASCADE, null=True)
     members = models.ManyToManyField(CustomUser)
@@ -66,19 +82,21 @@ class MemberPool(models.Model):
 
     def user_delete(self, user_object):
         
-        if user_object != self.project.owner:
-            try:
-                self.members.remove(user_object)
-                self.save()
-                return True
-            except Exception as e:
-                
-                return False
+        if user_object == self.project.owner:
+            return False
 
-        return False
+        try:
+            self.members.remove(user_object)
+            self.save()
+            return True
+        except Exception as e:
+            return False
 
     def user_add(self, user_object):
         
+        if self.members.count() >= self.project.max_members:
+            return False
+
         try:
             self.members.add(user_object)
             self.save()

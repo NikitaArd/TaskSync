@@ -176,11 +176,7 @@ def project_settings(request, project_uuid):
             name = form.cleaned_data['name']
             max_members = form.cleaned_data['max_members']
 
-            if not project.name == name or not project.max_members == max_members:
-
-                project.name = name
-                project.max_members = max_members
-                project.save()
+            project.change_project_settings(name, max_members)
 
             return redirect(reverse('projects_menu'))
 
