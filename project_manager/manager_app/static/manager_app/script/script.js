@@ -37,14 +37,6 @@ $(function(){
     })
 })
 
-$(function(){
-    $('#chat-window-call').on('click', function(){
-        $('#chat-window').toggleClass('chat-window-active');
-        var messageBody = document.querySelector('#messages-container-wrapper');
-        messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
-    })
-})
-
 function open_more(id) {
     section_more = document.getElementById(`card_more-${id}`);
     card_elem = document.getElementById(`card-${id}`);

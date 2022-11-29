@@ -21,7 +21,10 @@ from .models import (
         Column,
         Task,
         TasksSeq,
+        Chat,
+        Message,
         )
+
 from .forms import (
         RegistrationForm,
         LoginForm,
@@ -202,6 +205,36 @@ def project_delete(request, project_uuid):
         project.delete()
 
     return redirect(reverse('projects_menu'))
+
+@login_required
+def project_main_page(request, project_uuid):
+    try:
+        project = Project.objects.get(uuid=project_uuid)
+    except (Project.DoesNotExist, ValidationError):
+        return redirect(reverse('projects_menu'))
+
+    if request.user not in project.memberpool.members.all():
+        return redirect(reverse('projects_menu'))
+
+    columns = Column.objects.filter(project__uuid=project_uuid)
+    tasks_seq = TasksSeq.objects.filter(column__in=columns)
+    tasks = Task.objects.get_by_sequence(tasks_seq=tasks_seq, columns=columns)
+    chat = project.chat
+    project_messages = Message.objects.filter(chat=chat)
+
+    context = {
+            'project': project,
+            'columns': columns,
+            'tasks': tasks,
+            'chat': chat,
+            'project_messages': project_messages
+            }
+
+    response = render(request, 'manager_app/project_main_page.html', context)
+    response.set_cookie('p_uuid', project.uuid)
+
+    return response
+
 
 class PasswordResetConfirmViewWithErrors(PasswordResetConfirmView):
 

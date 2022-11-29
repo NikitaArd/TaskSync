@@ -10,7 +10,10 @@ from django.db.models.signals import (
 
 import uuid
 
-from .managers import CustomUserManager
+from .managers import (
+        CustomUserManager,
+        TaskManager,
+        )
 
 
 class Avatar(models.Model):
@@ -121,6 +124,8 @@ class Task(models.Model):
     content = models.CharField(max_length=80)
     done_status = models.BooleanField(default=False)
     column = models.ForeignKey(Column, blank=False, on_delete=models.CASCADE)
+
+    objects = TaskManager()
 
     def __str__(self) -> str:
         return '{} | {}'.format(self.content, self.column.name)

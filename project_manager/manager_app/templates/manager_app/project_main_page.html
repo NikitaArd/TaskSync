@@ -1,0 +1,70 @@
+{% extends './layout/basic.html' %}
+{% load static %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'manager_app/style/style.css' %}">
+    <link rel="stylesheet" href="{% static 'manager_app/style/style_main_page.css' %}">
+
+    <script src="{% static 'manager_app/script/script.js' %}" defer></script>
+    <script src="{% static 'manager_app/script/script_dnd.js' %}" defer></script>
+
+{% endblock styles %}
+
+{% block main %}
+    <div class="main-page">            
+        <div class="chat-window" id="chat-window">
+            <button class="chat-window-call" id="chat-window-call"><span id="chat-notification"></span></button>
+            <div class="chat-window-output" id="messages-container-wrapper">
+                <ul id="messages-container">
+                    {% for message in project_messages %}
+                        {% if message.user.uuid ==  request.user.uuid %}
+                            <li class="self">
+                        {% else %}
+                            <li class="other">
+                        {% endif %}                               
+                                <div>
+                                    <h3>{{ message.user.username }}</h3>
+                                    <p>{{ message.message_content }}</p>
+                                </div>
+                            </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="chat-window-input">
+                <input type="text" name="" id="chat-message-input">
+                <button id="send-message"></button>
+            </div>
+        </div>
+
+        <div class="manager-window">        
+            <section class="manager-window-input-bar">
+                <button id="delete-select-item"></button>
+                <input type="text" name="" id="input-select-item">
+                <button id="confirm-select-item"></button>
+            </section>
+            <section class="manager-window-columns" id="columns-window">
+                {% for column in columns %}
+                    <div class="column" id="{{ column.uuid }}">
+                        <h2 class="column-title">{{ column.name }}</h2>
+                        <ul class="container"> 
+                            {% for task in tasks %}
+                                {% if task.column == column %}
+                                <li id="{{ task.uuid }}" class="draggable task-item" draggable="true"><button class="task-done-button"></button><p>{{ task.content }}</p><img class="show-more-in-task" src="{% static 'manager_app/icons/show-more.svg' %}"></li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                        <button class="task-item-add"></button>
+                    </div>
+                {% endfor %}
+
+                <div class="column column-add">
+                    <img src="{% static 'manager_app/icons/Add project.svg' %}">
+                </div>
+            </section>
+            <span id="span-left"></span>
+            <span id="span-right"></span>
+        </div>
+    </div>
+    {{ user.username|json_script:"json-username" }}
+{% endblock main %}

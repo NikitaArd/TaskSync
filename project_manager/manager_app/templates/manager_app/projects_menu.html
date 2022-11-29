@@ -59,7 +59,7 @@
                         {% else %}
                             <div class="projects-card projects-card-member" id="card-{{ project.uuid }}">
                         {% endif %}
-                        <h1>{{ project.name }}</h1>
+                        <a href='{% url 'project_main_page' project.uuid  %}'><h1>{{ project.name }}</h1></a>
                         <p>Maks. uczęstników: {{ project.max_members }}</p>
                         <p>Twórco: {{ project.owner.username }}</p>
                         <div class="more-button" onclick="open_more('{{ project.uuid }}')">

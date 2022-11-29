@@ -1,5 +1,6 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
+from django.db import models
 
 class CustomUserManager(BaseUserManager):
 
@@ -26,3 +27,15 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError(_('Superuser must have is_superuser=True'))
         return self.create_user(email, password, **extra_fields)
+
+
+class TaskManager(models.Manager):
+
+    def get_by_sequence(self, tasks_seq, columns):
+        tasks = super().get_queryset().filter(column__in=columns)
+        tasks_list = []
+        for column in columns:
+            for seq in tasks_seq.get(column=column).tasks:
+                tasks_list.append(tasks.get(id=seq))
+
+        return tasks_list

@@ -17,8 +17,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Custom static files -->
+    {% block styles %}
     <link rel="stylesheet" href="{% static 'manager_app/style/style.css' %}">
     <link rel="stylesheet" href="{% static 'manager_app/style/style_inherited.css' %}">
+    {% endblock styles %}
+
     <script src="{% static 'manager_app/script/script.js' %}" defer></script>
     <title>{% block title %}{% endblock title%}</title>
 </head>

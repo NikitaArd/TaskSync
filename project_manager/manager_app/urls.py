@@ -15,6 +15,7 @@ from .views import (
         projects_menu,
         project_settings,
         project_delete,
+        project_main_page,
         PasswordResetConfirmViewWithErrors
         )
 
@@ -32,6 +33,7 @@ urlpatterns = [
         path('menu/', projects_menu, name='projects_menu'),
         path('project/settings/<project_uuid>/', project_settings, name='project_settings'),
         path('project/delete/<project_uuid>/', project_delete, name='project_delete'),
+        path('project/<project_uuid>/', project_main_page, name='project_main_page'),
 
         # Ajax URLs
 
