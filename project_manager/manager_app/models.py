@@ -194,6 +194,13 @@ class TasksSeq(models.Model):
 
         return True
 
+class Chat(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, db_index=True)
+    project = models.OneToOneField(Project, on_delete=models.CASCADE, null=True)
+
+    def __str__(self) -> str:
+        return '{} Chat'.format(self.project.name)
+
 # All Signals
 
 # User signals
@@ -206,6 +213,11 @@ def post_save_project_member_creator(sender, **kwargs):
         new_member_pool = MemberPool(project=kwargs['instance'])
         new_member_pool.save()
         new_member_pool.members.add(kwargs['instance'].owner)
+
+def post_save_project_chat_creator(sender, **kwargs):
+    if kwargs['created']:
+        new_chat = Chat(project=kwargs['instance'])
+        new_chat.save()
 
 def pre_delete_task_delete_from_seq(sender, **kwargs):
     tasks_seq = TasksSeq.objects.get(column=kwargs['instance'].column)
@@ -225,6 +237,7 @@ def post_save_column_tasks_seq_creator(sender, **kwargs):
 
 
 post_save.connect(post_save_project_member_creator, sender=Project)
+post_save.connect(post_save_project_chat_creator, sender=Project)
 pre_save.connect(pre_save_user_dispatcher, sender=CustomUser)
 pre_delete.connect(pre_delete_task_delete_from_seq, sender=Task)
 post_save.connect(post_save_task_add_to_seq, sender=Task)
