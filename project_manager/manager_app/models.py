@@ -198,8 +198,22 @@ class Chat(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, db_index=True)
     project = models.OneToOneField(Project, on_delete=models.CASCADE, null=True)
 
+    objects = None
+
     def __str__(self) -> str:
         return '{} Chat'.format(self.project.name)
+
+class Message(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, db_index=True)
+    message_content = models.CharField(max_length=120, blank=False)
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE, null=False)
+    writer = models.ForeignKey(CustomUser, on_delete=models.PROTECT, null=False)
+    datetime = models.DateTimeField(auto_now_add=True, null=False, blank=True)
+
+    objects = None
+
+    def __str__(self) -> str:
+        return '{} | {}'.format(self.chat.project.name, self.message_content[:20])
 
 # All Signals
 
