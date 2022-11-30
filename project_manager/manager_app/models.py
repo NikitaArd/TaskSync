@@ -55,7 +55,7 @@ class Project(models.Model):
 
     def check_user_is_member(self, user_uuid):
 
-        if self.members.members.filter(uuid=user_uuid):
+        if self.memberpool.members.filter(uuid=user_uuid):
             return True
 
         return False
@@ -118,6 +118,16 @@ class Column(models.Model):
     def __str__(self) -> str:
         return '{} | {}'.format(self.name, self.project.name)
 
+    def change_name(self, new_name):
+        self.name = new_name
+
+        try:
+            self.save()
+        except:
+            return False
+
+        return True
+
 class Task(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, db_index=True)
 
@@ -171,12 +181,12 @@ class TasksSeq(models.Model):
     def shift_task(self, prev_task_uuid, task_uuid, user_uuid): # Function to change task in sequence (ex. [3, 2, 1] -> [3, 1, 2])
 
         try:
-            self.column.project.members.members.get(uuid=user_uuid)
+            self.column.project.memberpool.members.get(uuid=user_uuid)
         except CustomUser.DoesNotExist:
             return False
 
         try:
-            task = Tasks.objects.get(uuid=task_uuid)
+            task = Task.objects.get(uuid=task_uuid)
         except Task.DoesNotExist:
             return False
 
@@ -185,12 +195,12 @@ class TasksSeq(models.Model):
             self.tasks.remove(str(task.id))
         except ValueError as e:
             prev_tasks_seq = TasksSeq.objects.get(column=task.column)
-            prev_tasks_seq.id_delete(task.id)
+            prev_tasks_seq.delete_task_from_seq(task.id)
             task.column = self.column
             task.save()
 
         if prev_task_uuid:
-            prev_task = Tasks.objects.get(uuid=prev_task_uuid)
+            prev_task = Task.objects.get(uuid=prev_task_uuid)
             self.tasks.insert(self.tasks.index(str(prev_task.id))+1, str(task.id))
         else:
             self.tasks.insert(0, str(task.id))

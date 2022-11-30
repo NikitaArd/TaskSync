@@ -4,7 +4,6 @@ function getCookie(name){
   if (clear_cookies.length === 2) return clear_cookies.pop().split(';').shift();
 }
 
-//const user_id = getCookie('user_uuid')
 const csrf_token = getCookie('csrftoken')
 
 $(function(){

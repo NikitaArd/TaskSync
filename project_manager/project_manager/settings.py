@@ -34,6 +34,7 @@ ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,6 +44,15 @@ INSTALLED_APPS = [
     'manager_app',
     'widget_tweaks',
 ]
+
+ASGI_APPLICATION = 'project_manager.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default':{
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    }
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -159,3 +169,12 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
+
+DEFAULT_TASK_CONTENT = 'Wpisz zadanie'
+DEFAULT_COLUMN_NAME = 'Nowa kolumna'
+
+
+WS_ERROR_MESSAGES = {
+    'Invalid_data': 'Wprowadzono błędne dane',
+    'Access_denied': 'Odmowa dostępu',
+}

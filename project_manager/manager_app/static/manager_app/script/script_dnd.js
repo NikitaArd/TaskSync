@@ -9,12 +9,12 @@ function getCookie(name){
   if (clear_cookies.length === 2) return clear_cookies.pop().split(';').shift();
 }
 
-const project_uuid = getCookie('project_uuid')
-const user_uuid = getCookie('userid')
+const project_uuid = getCookie('p_uuid')
+const user_id = getCookie('u_uuid')
 const username = JSON.parse(document.getElementById('json-username').textContent)
 
 // init sockets
-const tasksUrl = `ws://${window.location.host}/ws/project/${project_uuid}`
+const tasksUrl = `ws://${window.location.host}/ws/project/${project_uuid}/`
 
 
 const tasksSocket = new WebSocket(tasksUrl)
@@ -22,7 +22,7 @@ const tasksSocket = new WebSocket(tasksUrl)
 // onmessage functions
 tasksSocket.onmessage = function (e) {
   let data = JSON.parse(e.data)
-  if(data['type'] == 'task_shift'){
+  if(data['request_type'] == 'task_shift'){
     prev_item = document.getElementById(data['prev_task'])
     item = document.getElementById(data['task'])
     if(prev_item){
@@ -31,30 +31,30 @@ tasksSocket.onmessage = function (e) {
       $(document.getElementById(data['column']).lastElementChild.previousElementSibling).prepend(item);
     }
   }
-  if(data['type'] == 'task_add'){
+  if(data['request_type'] == 'task_add'){
     $(document.getElementById(data['column_uuid']).lastElementChild.previousElementSibling).append(render_task(data['new_task_content'], data['new_task_uuid']));
     updateDraggalbeElements();
   }
-  if(data['type'] == 'task_status_edit'){
+  if(data['request_type'] == 'task_status_edit'){
     document.getElementById(data['task_uuid']).classList.toggle('task-item-done');
   }
-  if(data['type'] == 'task_delete'){
+  if(data['request_type'] == 'task_delete'){
     document.getElementById(data['task_uuid']).remove();
   }
-  if(data['type'] == 'task_content_edit'){
+  if(data['request_type'] == 'task_content_edit'){
     document.getElementById(data['task_uuid']).lastElementChild.previousElementSibling.innerHTML = data['new_content'];
   }
-  if(data['type'] == 'column_add'){
+  if(data['request_type'] == 'column_add'){
     $('.column-add').before(render_column(data['column_name'], data['column_uuid']));
     window.location.reload();
   }
-  if(data['type'] == 'column_delete'){
+  if(data['request_type'] == 'column_delete'){
     document.getElementById(data['column_uuid']).remove();
   }
-  if(data['type'] == 'column_name_edit'){
+  if(data['request_type'] == 'column_name_edit'){
     document.getElementById(data['column_uuid']).firstElementChild.innerHTML = data['new_name'];
   }
-  if(data['type'] == 'chat_message'){
+  if(data['request_type'] == 'chat_message'){
     if(user_id == data['user_id']){
       $('#messages-container').append(render_message(content=data['message'], useraname=data['username'], own='self'));
     } else {
@@ -177,12 +177,9 @@ function updateDraggalbeElements() {
 //  websocket send views
 
 function ws_task_add(column_uuid){
-  // console.log(column_uuid);
-  // console.log('project_uuid from cookie');
-  // console.log('user_id from cookie');
 
   tasksSocket.send(JSON.stringify({
-    'type':'task_add',
+    'request_type':'task_add',
     'column_uuid': column_uuid,
 
     'project_uuid': project_uuid,
@@ -191,15 +188,11 @@ function ws_task_add(column_uuid){
 }
 
 function ws_task_shift(prev_task_id, task_id, column_uuid){
-  // console.log(prev_task_id);
-  // console.log(task_id);
-  // console.log(column_uuid);
-  // console.log('project_uuid from cookie');
-  // console.log('user_id from cookie');
+
   tasksSocket.send(JSON.stringify({
-    'type': 'task_shift',
-    'prev_task_id': prev_task_id,
-    'task_id': task_id,
+    'request_type': 'task_shift',
+    'prev_task_uuid': prev_task_id,
+    'task_uuid': task_id,
     'to_column_uuid': column_uuid,
 
     'project_uuid': project_uuid,
@@ -208,13 +201,9 @@ function ws_task_shift(prev_task_id, task_id, column_uuid){
 }
 
 function ws_task_delete(task_id, column_uuid){
-  // console.log(task_id);
-  // console.log(column_uuid);
-  // console.log('project_uuid from cookie');
-  // console.log('user_id from cookie');
 
   tasksSocket.send(JSON.stringify({
-     'type': 'task_delete',
+     'request_type': 'task_delete',
      'task_uuid': task_id,
      'column_uuid': column_uuid,
 
@@ -224,13 +213,9 @@ function ws_task_delete(task_id, column_uuid){
 }
 
 function ws_task_done_toggler(task_id, column_uuid){
-  // console.log(task_id);
-  // console.log(column_uuid);
-  // console.log('project_uuid from cookie');
-  // console.log('user_id from cookie');
 
   tasksSocket.send(JSON.stringify({
-    'type': 'task_status_edit',
+    'request_type': 'task_status_edit',
     'task_uuid': task_id,
     'column_uuid': column_uuid,
 
@@ -240,14 +225,9 @@ function ws_task_done_toggler(task_id, column_uuid){
 }
 
 function ws_task_content_edit(task_id, column_uuid, newcontent){
-  // console.log(task_id);
-  // console.log(column_uuid);
-  // console.log(newcontent);
-  // console.log('project_uuid from cookie');
-  // console.log('user_id from cookie');
 
   tasksSocket.send(JSON.stringify({
-    'type': 'task_content_edit',
+    'request_type': 'task_content_edit',
     'task_uuid': task_id,
     'column_uuid': column_uuid,
     'new_content': newcontent,
@@ -258,22 +238,18 @@ function ws_task_content_edit(task_id, column_uuid, newcontent){
 }
 
 function ws_column_add(){
-  // console.log('project_uuid from cookie');
-  // console.log('user_id from cookie');
+
   tasksSocket.send(JSON.stringify({
-    'type': 'column_add',
+    'request_type': 'column_add',
     'project_uuid': project_uuid,
     'user_id': user_id,
   }))
 }
 
 function ws_column_delete(column_uuid){
-  // console.log(column_uuid);
-  // console.log('project_uuid from cookie');
-  // console.log('user_id from cookie');
 
   tasksSocket.send(JSON.stringify({
-    'type': 'column_delete',
+    'request_type': 'column_delete',
     'column_uuid': column_uuid,
 
     'project_uuid': project_uuid,
@@ -282,13 +258,9 @@ function ws_column_delete(column_uuid){
 }
 
 function ws_column_name_edit(column_uuid, newname){
-  // console.log(newname);
-  // console.log(column_uuid);
-  // console.log('project_uuid from cookie');
-  // console.log('user_id from cookie');
 
   tasksSocket.send(JSON.stringify({
-    'type': 'column_name_edit',
+    'request_type': 'column_name_edit',
     'column_uuid': column_uuid,
     'new_name': newname,
 
@@ -298,13 +270,9 @@ function ws_column_name_edit(column_uuid, newname){
 }
 
 function ws_message_send(message_text, username){
-  // console.log(message_text);
-  // console.log(username);
-  // console.log('project_uuid from cookie');
-  // console.log('user_id from cookie');
 
   tasksSocket.send(JSON.stringify({
-    'type': 'chat_message',
+    'request_type': 'chat_message',
     'message': message_text,
     'username': username,
     
