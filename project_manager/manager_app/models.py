@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.fields import ArrayField
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db.models.signals import (
         pre_save,
         post_save,
@@ -182,12 +183,12 @@ class TasksSeq(models.Model):
 
         try:
             self.column.project.memberpool.members.get(uuid=user_uuid)
-        except CustomUser.DoesNotExist:
+        except (CustomUser.DoesNotExist, ValidationError):
             return False
 
         try:
             task = Task.objects.get(uuid=task_uuid)
-        except Task.DoesNotExist:
+        except (Task.DoesNotExist, ValidationError):
             return False
 
         # if task not in current sequence => this task in other sequence
@@ -200,7 +201,11 @@ class TasksSeq(models.Model):
             task.save()
 
         if prev_task_uuid:
-            prev_task = Task.objects.get(uuid=prev_task_uuid)
+            try:
+                prev_task = Task.objects.get(uuid=prev_task_uuid)
+            except (Task.DoesNotExist, ValidationError):
+                return False
+
             self.tasks.insert(self.tasks.index(str(prev_task.id))+1, str(task.id))
         else:
             self.tasks.insert(0, str(task.id))

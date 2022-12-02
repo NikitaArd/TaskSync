@@ -22,6 +22,11 @@ const tasksSocket = new WebSocket(tasksUrl)
 // onmessage functions
 tasksSocket.onmessage = function (e) {
   let data = JSON.parse(e.data)
+
+  if(data['error_message']){
+      alert(data['error_message'])
+  }
+
   if(data['request_type'] == 'task_shift'){
     prev_item = document.getElementById(data['prev_task'])
     item = document.getElementById(data['task'])
@@ -69,9 +74,6 @@ tasksSocket.onmessage = function (e) {
     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
   }
   
-  if(data['error_message']){
-    alert(data['error_message'])
-  }
 }
 
 draggables.forEach(draggable => {

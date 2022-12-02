@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 
 from .models import (
     CustomUser,
@@ -13,11 +14,14 @@ from .models import (
 def task_shift(json_data:dict) -> dict:
     error_message = ''
 
+
     try:
         column = Column.objects.get(uuid=json_data['to_column_uuid'])
         tasks_seq = TasksSeq.objects.get(column=column)
-    except (Column.DoesNotExist, TasksSeq.DoesNotExist, ValueError):
+    except (Column.DoesNotExist, TasksSeq.DoesNotExist, ValidationError):
         error_message = settings.WS_ERROR_MESSAGES['Invalid_data']
+
+        return {'error_message': error_message}
         
 
     if column.project.check_user_is_member(user_uuid=json_data['user_id']):
@@ -25,6 +29,8 @@ def task_shift(json_data:dict) -> dict:
             error_message = settings.WS_ERROR_MESSAGES['Invalid_data']
     else:
         error_message = settings.WS_ERROR_MESSAGES['Access_denied']
+
+        return {'error_message': error_message}
 
     context = {
         'request_type': json_data['request_type'],
@@ -44,8 +50,10 @@ def task_add(json_data:dict) -> dict:
         column = Column.objects.get(uuid=json_data['column_uuid'])
         new_task = Task(content=settings.DEFAULT_TASK_CONTENT, column=column)
         new_task.save()
-    except (Column.DoesNotExist, Task.DoesNotExist, ValueError):
+    except (Column.DoesNotExist, Task.DoesNotExist, ValidationError):
         error_message = settings.WS_ERROR_MESSAGES['Invalid_data']
+
+        return {'error_message': error_message}
 
     context = {
         'request_type':json_data['request_type'],
@@ -63,14 +71,18 @@ def task_status_edit(json_data:dict) -> dict:
 
     try:
         column = Column.objects.get(uuid=json_data['column_uuid'])
-    except (Column.DoesNotExist, ValueError):
-        error_message = settings.WS_ERROR_MASSEGES['Invalid_data']
+        task_toggle = Task.objects.get(uuid=json_data['task_uuid'])
+    except (Column.DoesNotExist, ValidationError):
+        error_message = settings.WS_ERROR_MESSAGES['Invalid_data']
+        
+        return {'error_message': error_message}
 
     if column.project.check_user_is_member(user_uuid=json_data['user_id']):
-        task_toggle = Task.objects.get(uuid=json_data['task_uuid'])
         task_toggle.toggle_status()
     else:
-        error_message = settings.WS_ERROR_MESSAGES
+        error_message = settings.WS_ERROR_MESSAGES['Access_denied']
+
+        return {'error_message': error_message}
 
     
     context = {
@@ -88,17 +100,23 @@ def task_delete(json_data:dict) -> dict:
 
     try:
         column = Column.objects.get(uuid=json_data['column_uuid'])
-    except (Column.DoesNotExist, ValueError):
+    except (Column.DoesNotExist, ValidationError):
         error_message = settings.WS_ERROR_MESSAGES['Invalid_data']
+
+        return {'error_message': error_message}
 
     if column.project.check_user_is_member(user_uuid=json_data['user_id']):
         try:
             task_to_delete = Task.objects.get(uuid=json_data['task_uuid'])
             task_to_delete.delete()
-        except (Task.DoesNotExist, ValueError):
+        except (Task.DoesNotExist, ValidationError):
             error_message = settings.WS_ERROR_MESSAGES['Invalid_data']
+            
+            return {'error_message': error_message}
     else:
         error_message = settings.WS_ERROR_MESSAGES['Access_denied']
+
+        return {'error_message': error_message}
 
     context = {
         'request_type': json_data['request_type'],
@@ -114,15 +132,21 @@ def task_content_edit(json_data:dict) -> dict:
 
     try:
         column = Column.objects.get(uuid=json_data['column_uuid'])
-    except (Column.DoesNotExist, ValueError):
+        task_to_edit = Task.objects.get(uuid=json_data['task_uuid'])
+    except (Column.DoesNotExist, ValidationError):
         error_message = settings.WS_ERROR_MESSAGES['Invalid_data']
 
+        return {'error_message': error_message}
+
     if column.project.check_user_is_member(user_uuid=json_data['user_id']):
-        task_to_edit = Task.objects.get(uuid=json_data['task_uuid'])
         if not task_to_edit.change_content(json_data['new_content']):
-            error_message = settings.WS_ERROR_MESSAGES
+            error_message = settings.WS_ERROR_MESSAGES['Invalid_data']
+
+            return {'error_message': error_message}
     else:
         error_message = settings.WS_ERROR_MESSAGES['Acess_denied']
+
+        return {'error_message': error_message}
 
     context = {
         'request_type': json_data['request_type'],
@@ -142,8 +166,10 @@ def column_add(json_data:dict) -> dict:
         project = Project.objects.get(uuid=json_data['project_uuid'])
         column = Column(name=settings.DEFAULT_COLUMN_NAME, project=project)
         column.save()
-    except (Project.DoesNotExist, ValueError):
+    except (Project.DoesNotExist, ValidationError):
         error_message = settings.WS_ERROR_MESSAGES['Invalid_data']
+
+        return {'error_message': error_message}
 
     context = {
         'request_type': json_data['request_type'],
@@ -160,13 +186,17 @@ def column_delete(json_data:dict) -> dict:
 
     try:
         column = Column.objects.get(uuid=json_data['column_uuid'])
-    except (Column.DoesNotExist, ValueError):
+    except (Column.DoesNotExist, ValidationError):
         error_message = settings.WS_ERROR_MESSAGES['Invalid_data']
+
+        return {'error_message': error_message}
 
     if column.project.check_user_is_member(user_uuid=json_data['user_id']):
         column.delete()
     else:
-        error_message = settings.WS_ERROR_MESSAGES
+        error_message = settings.WS_ERROR_MESSAGES['Access_denied']
+
+        return {'error_message': error_message}
 
     context = {
         'request_type': json_data['request_type'],
@@ -182,14 +212,20 @@ def column_name_edit(json_data:dict) -> dict:
 
     try:
         column = Column.objects.get(uuid=json_data['column_uuid'])
-    except (Column.DoesNotExist, ValueError):
+    except (Column.DoesNotExist, ValidationError):
         error_message = settings.WS_ERROR_MESSAGES['Invalid_data']
+
+        return {'error_message': error_message}
 
     if column.project.check_user_is_member(user_uuid=json_data['user_id']):
         if not column.change_name(json_data['new_name']):
             error_message = settings.WS_ERROR_MESSAGES['Invalid_data']
+
+            return {'error_message': error_message}
     else:
         error_message = settings.WS_ERROR_MESSAGE['Access_denied']
+
+        return {'error_message': error_message}
 
     context = {
         'request_type': json_data['request_type'],
@@ -210,8 +246,10 @@ def chat_message(json_data:dict) -> dict:
 
         new_message = Message(message_content=json_data['message'], chat=project.chat, writer=user)
         new_message.save()
-    except (User.DoesNotExist, Project.DoesNotExist, ValueError):
+    except (User.DoesNotExist, Project.DoesNotExist, ValidationError):
         error_message = settings.WS_ERROR_MESSAGES['Invalid_data']
+
+        return {'error_message': error_message}
 
     context = {
         'request_type': json_data['request_type'],
