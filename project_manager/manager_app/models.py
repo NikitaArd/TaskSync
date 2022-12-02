@@ -170,7 +170,7 @@ class TasksSeq(models.Model):
 
     def delete_task_from_seq(self, id):
         try:
-            self.remove(str(id))
+            self.tasks.remove(str(id))
             self.save()
 
             return True

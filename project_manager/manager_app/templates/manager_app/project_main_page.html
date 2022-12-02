@@ -17,13 +17,13 @@
             <div class="chat-window-output" id="messages-container-wrapper">
                 <ul id="messages-container">
                     {% for message in project_messages %}
-                        {% if message.user.uuid ==  request.user.uuid %}
+                        {% if message.writer.uuid ==  request.user.uuid %}
                             <li class="self">
                         {% else %}
                             <li class="other">
                         {% endif %}                               
                                 <div>
-                                    <h3>{{ message.user.username }}</h3>
+                                    <h3>{{ message.writer.first_name }}</h3>
                                     <p>{{ message.message_content }}</p>
                                 </div>
                             </li>
@@ -50,7 +50,11 @@
                         <ul class="container"> 
                             {% for task in tasks %}
                                 {% if task.column == column %}
-                                <li id="{{ task.uuid }}" class="draggable task-item" draggable="true"><button class="task-done-button"></button><p>{{ task.content }}</p><img class="show-more-in-task" src="{% static 'manager_app/icons/show-more.svg' %}"></li>
+                                    {% if task.done_status %}
+                                        <li id="{{ task.uuid }}" class="draggable task-item task-item-done" draggable="true"><button class="task-done-button"></button><p>{{ task.content }}</p><img     class="show-more-in-task" src="{% static 'manager_app/icons/show-more.svg' %}"></li>
+                                    {% else %}
+                                        <li id="{{ task.uuid }}" class="draggable task-item" draggable="true"><button class="task-done-button"></button><p>{{ task.content }}</p><img     class="show-more-in-task" src="{% static 'manager_app/icons/show-more.svg' %}"></li>
+                                    {% endif  %}
                                 {% endif %}
                             {% endfor %}
                         </ul>

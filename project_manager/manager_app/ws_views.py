@@ -72,6 +72,7 @@ def task_status_edit(json_data:dict) -> dict:
     else:
         error_message = settings.WS_ERROR_MESSAGES
 
+    
     context = {
         'request_type': json_data['request_type'],
         'task_uuid': json_data['task_uuid'],
@@ -215,7 +216,7 @@ def chat_message(json_data:dict) -> dict:
     context = {
         'request_type': json_data['request_type'],
         'message': json_data['message'],
-        'username': json_data['username'],
+        'username': user.first_name,
         'user_id': json_data['user_id'],
         'error_message': error_message,
     }

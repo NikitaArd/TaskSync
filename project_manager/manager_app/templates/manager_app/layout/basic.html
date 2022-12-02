@@ -37,6 +37,7 @@
 
     <nav id="menu">
         <div id="menuContent">
+            <a><p class="text-1">{{ request.user.email }}</p></a>
             <a href="{% url 'title_page' %}"><p class="text-1">Strona główna</p></a>
             <a href="{% url 'account_info_page' %}"><p class="text-1">Twoje konto</p></a>
             <a href="{% url 'projects_menu' %}"><p class="text-1">Galeria projektów</p></a>

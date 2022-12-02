@@ -36,6 +36,7 @@ tasksSocket.onmessage = function (e) {
     updateDraggalbeElements();
   }
   if(data['request_type'] == 'task_status_edit'){
+          console.log(data['task_uuid']);
     document.getElementById(data['task_uuid']).classList.toggle('task-item-done');
   }
   if(data['request_type'] == 'task_delete'){
@@ -66,6 +67,10 @@ tasksSocket.onmessage = function (e) {
     }
     var messageBody = document.querySelector('#messages-container-wrapper');
     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+  }
+  
+  if(data['error_message']){
+    alert(data['error_message'])
   }
 }
 
@@ -299,7 +304,7 @@ function render_message(content, username, own) {
 }
 
 function render_task(content, id) {
-  return `<li id="${id}" class="draggable task-item" draggable="true"><button class="task-done-button"></button><p>${content}</p><img class="show-more-in-task" src="/static/icons/show-more.svg"></li>`
+  return `<li id="${id}" class="draggable task-item" draggable="true"><button class="task-done-button"></button><p>${content}</p><img class="show-more-in-task" src="/static/manager_app/icons/show-more.svg"></li>`
 }
 
 $(function(){
@@ -346,7 +351,7 @@ $(function(){
 })
 
 $(function(){
-  $('.task-done-button').on('click', function(){
+  $(document).on('click', '.task-done-button', function(){
     ws_task_done_toggler(this.parentElement.id, this.parentElement.parentElement.parentElement.id);
   })
 })
