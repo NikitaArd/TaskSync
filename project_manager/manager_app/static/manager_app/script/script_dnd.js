@@ -41,7 +41,6 @@ tasksSocket.onmessage = function (e) {
     updateDraggalbeElements();
   }
   if(data['request_type'] == 'task_status_edit'){
-          console.log(data['task_uuid']);
     document.getElementById(data['task_uuid']).classList.toggle('task-item-done');
   }
   if(data['request_type'] == 'task_delete'){
@@ -406,8 +405,7 @@ $(function(){
   })
 })
 
-$(function(){
-  $('#confirm-select-item').on('click', function(){
+function confirm_select(){
     select_elem = document.getElementsByClassName('select-element')[0]
     if(select_elem) {
       if (select_elem.classList.contains('task-item')) {
@@ -420,6 +418,14 @@ $(function(){
       document.getElementById('input-select-item').value = '';
     }
     document.getElementById('input-select-item').value = '';
+}
+
+$(function(){
+  $('#confirm-select-item').on('click', confirm_select());
+  $('#input-select-item').on('keyup', function({key}){
+     if(key == 'Enter'){
+       confirm_select();
+     }
   })
 })
 

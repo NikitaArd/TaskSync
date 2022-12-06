@@ -126,6 +126,11 @@ $(function(){
 
 $(function(){
     $(document).on('click', '#add-user-to-project', add_user_to_project);
+    $('#add-user-form-input').on('keyup', function({key}){
+     if(key == 'Enter'){
+        add_user_to_project();
+     }
+    })
 });
 
 $(function(){
