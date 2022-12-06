@@ -210,6 +210,9 @@ header .logo img {
 .projects-member {
   background-color: #FBE8A4;
 }
+.projects-all {
+  background-color: #BCEDBC;
+}
 .projects-menu {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

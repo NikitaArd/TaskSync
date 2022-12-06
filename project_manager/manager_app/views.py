@@ -148,14 +148,17 @@ def projects_menu(request):
     option = request.GET.get('option', '')
 
     projects = Project.objects.filter(memberpool__members__in=str(request.user.id))
+    projects_own = Project.objects.filter(owner=request.user)
 
     if mode == 'sort' and option:
         
         if option == 'own':
-            projects = Project.objects.filter(owner=request.user)
-        # elif option == 'member':
-            # projects = 
-    
+            projects = projects_own
+        elif option == 'member':
+            projects = projects.difference(projects_own)
+        else:
+            return redirect(reverse('projects_menu'))
+
     context = {
             'projects': projects,
             'form': form,
