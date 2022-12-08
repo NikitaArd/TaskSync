@@ -35,7 +35,7 @@ class CustomUser(AbstractUser):
     second_name = models.CharField(max_length=40, blank=False, verbose_name='Nazwisko użytkownika')
 
     registration_datetime = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Data rejestracji')
-    user_avatar = models.ForeignKey(Avatar, on_delete=models.PROTECT, default=Avatar.objects.get(search_slug=settings.DEFAULT_AVATAR).id, verbose_name='Avatar użytkownika')
+    user_avatar = models.ForeignKey(Avatar, on_delete=models.PROTECT, null=True, verbose_name='Avatar użytkownika')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -239,7 +239,14 @@ class Message(models.Model):
 
 # User signals
 def pre_save_user_dispatcher(sender, **kwargs):
-    kwargs['instance'].username = '{} {}'.format(kwargs['instance'].first_name, kwargs['instance'].second_name)
+    if kwargs['created']:
+        kwargs['instance'].username = '{} {}'.format(kwargs['instance'].first_name, kwargs['instance'].second_name)
+        try:
+            avatar = Avatar.objects.get(slug=settings.DEFAULT_AVATAR)
+            kwargs['user_avatar'] = avatar
+        except Avatar.DoesNotExist:
+            print('Nie ma domyśnego avatara')
+
 
 # Project signals
 def post_save_project_member_creator(sender, **kwargs):
