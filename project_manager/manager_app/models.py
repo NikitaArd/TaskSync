@@ -239,14 +239,15 @@ class Message(models.Model):
 
 # User signals
 def pre_save_user_dispatcher(sender, **kwargs):
-    if kwargs['created']:
-        kwargs['instance'].username = '{} {}'.format(kwargs['instance'].first_name, kwargs['instance'].second_name)
-        try:
-            avatar = Avatar.objects.get(slug=settings.DEFAULT_AVATAR)
-            kwargs['user_avatar'] = avatar
-        except Avatar.DoesNotExist:
-            print('Nie ma domyśnego avatara')
+    kwargs['instance'].username = '{} {}'.format(kwargs['instance'].first_name, kwargs['instance'].second_name)
 
+def pre_save_user_avatar_setter(sender, **kwargs):
+    if not kwargs['instance'].user_avatar:
+        try:
+            avatar = Avatar.objects.get(search_slug=settings.DEFAULT_AVATAR)
+            kwargs['instance'].user_avatar = avatar
+        except Avatar.DoesNotExist:
+            print('Nie ustawiono domyślnego avatara')
 
 # Project signals
 def post_save_project_member_creator(sender, **kwargs):
@@ -278,6 +279,7 @@ def post_save_column_tasks_seq_creator(sender, **kwargs):
 
 
 post_save.connect(post_save_project_member_creator, sender=Project)
+pre_save.connect(pre_save_user_avatar_setter, sender=CustomUser)
 post_save.connect(post_save_project_chat_creator, sender=Project)
 pre_save.connect(pre_save_user_dispatcher, sender=CustomUser)
 pre_delete.connect(pre_delete_task_delete_from_seq, sender=Task)
