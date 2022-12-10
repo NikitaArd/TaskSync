@@ -23,6 +23,7 @@
     {% endblock styles %}
 
     <script src="{% static 'manager_app/script/script.js' %}" defer></script>
+    <link rel="icon" type="image/x-icon" href="{% static 'manager_app/icons/fav.svg' %}">
     <title>{% block title %}{% endblock title%}</title>
 </head>
 <body>
@@ -46,7 +47,7 @@
             {% if request.user.is_authenticated %}
             <a href="{% url 'logout' %}"><p class="text-1">Wyloguj się</p></a>
             {% endif %}
-            <a href="#"><p class="text-1">Repo</p></a>
+            <a href="https://github.com/NikitaArd/django-project-manager"><p class="text-1">Repo</p></a>
         </div>
         <div id="menuToggle">
             <i class="fa fa-bars">
