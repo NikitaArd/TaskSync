@@ -118,10 +118,12 @@ def account_info_page(request):
 
     avatars = Avatar.objects.all()
     avatar_change_url = '{}{}'.format(reverse('account_info_page'), '?mode=change&avatar=') 
+    project_count = Project.objects.filter(memberpool__members__in=str(request.user.id)).count()
 
     context = {
             'avatars': avatars,
             'avatar_change_url': avatar_change_url,
+            'project_count': project_count,
             }
 
     return render(request, 'manager_app/account_info_page.html', context)

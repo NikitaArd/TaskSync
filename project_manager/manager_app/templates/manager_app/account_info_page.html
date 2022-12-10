@@ -37,7 +37,7 @@
                 <p>Imię: <span>{{ user.first_name }}</span></p>
                 <p>Nazwisko: <span>{{ user.second_name }}</span></p>
                 <p>Data rejestracji: <span>{{ user.registration_datetime|date:"d E Y" }}</span></p>
-                <p>Ilość aktywnych projektów: <span>None</span></p>
+                <p>Ilość aktywnych projektów: <span>{{ project_count }}</span></p>
             </section>
         </div>
     </div>
