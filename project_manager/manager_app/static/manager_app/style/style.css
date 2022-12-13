@@ -281,10 +281,18 @@ header .logo img {
 }
 .projects-card h1 {
   font-size: 26px;
-  color: #515151;
   line-height: 165%;
   margin: 0;
   margin-left: 10px;
+
+  width: 85%;
+  vertical-align: middle;
+  overflow: hidden;
+  background: linear-gradient(to left, transparent 0%, #232323 15%, #232323 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
 }
 .projects-card p {
   font-size: 21px;
