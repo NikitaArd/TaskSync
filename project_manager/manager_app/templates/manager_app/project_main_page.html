@@ -27,7 +27,7 @@
                             <li class="other">
                         {% endif %}                               
                                 <div>
-                                    <h3>{{ message.writer.first_name }}</h3>
+                                    <h3 title="{{ message.writer.username }}">{{ message.writer.first_name }}</h3>
                                     <p>{{ message.message_content }}</p>
                                 </div>
                             </li>
