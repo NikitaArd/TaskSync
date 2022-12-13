@@ -61,8 +61,9 @@ def registration_page(request):
         form = RegistrationForm(request.POST)
 
         if form.is_valid():
-            form.save() 
-            return redirect(reverse('title_page'))
+            created_user = form.save() 
+            login(request, created_user)
+            return redirect(reverse('account_info_page'))
 
         error_messages = get_error_messages(form)
         
