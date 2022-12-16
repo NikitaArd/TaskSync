@@ -19,7 +19,7 @@
                 </section>
                 </br>
                 <section class="max-members">
-                    <h3>Maksymalna ilośc uczęstników</h3>
+                    <h3>Maksymalna ilość uczestników</h3>
                     <input name='max_members' class="dialog-project-input-slider" type="range" min="1" max="8" value="2">
                     <div class="dialog-project-count-bar">
                         <p>1</p>
@@ -48,7 +48,7 @@
                 </section>
 
                 <section>
-                    <div class="projects-member"></div> <a href="?mode=sort&option=member">- jesteś uczęstnikiem</a>
+                    <div class="projects-member"></div> <a href="?mode=sort&option=member">- jesteś uczestnikiem</a>
                 </section>
 
                 <section>
@@ -64,8 +64,8 @@
                             <div class="projects-card projects-card-member" id="card-{{ project.uuid }}">
                         {% endif %}
                         <a href='{% url 'project_main_page' project.uuid  %}'><h1>{{ project.name }}</h1></a>
-                        <p>Maks. uczęstników: {{ project.max_members }}</p>
-                        <p>Twórco: {{ project.owner.username }}</p>
+                        <p>Maks. uczestników: {{ project.max_members }}</p>
+                        <p>Twórca: {{ project.owner.username }}</p>
                         <div class="more-button" onclick="open_more('{{ project.uuid }}')">
                             <img src="{% static 'manager_app/icons/More.svg' %}">
                         </div>
