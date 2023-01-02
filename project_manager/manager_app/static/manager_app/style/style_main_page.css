@@ -223,9 +223,29 @@
   background-color: #E9E5DF;
   border: 2px solid #DAD2C6;
   border-radius: 3px;
+  z-index: 999;
   transition: all 0.4s;
 }
+.file-window {
+  width: 400px;
+  height: 440px;
+  position: fixed;
+  bottom: -455px;
+  left: 15px;
+  background-color: #E9E5DF;
+  border: 2px solid #DAD2C6;
+  border-radius: 3px;
+  z-index: 999;
+  transition: all 0.4s;
+}
+.window-higher{
+  z-index: 9999 !important;
+}
 .chat-window-active {
+  bottom: 15px;
+  transition: all 0.4s;
+}
+.file-window-active {
   bottom: 15px;
   transition: all 0.4s;
 }
@@ -243,6 +263,29 @@
   background-size: 62%;
   background-position: center;
   cursor: pointer;
+}
+.file-window-call {
+  position: absolute;
+  top: -85px;
+  left: 95px;
+  width: 55px;
+  height: 55px;
+  padding: 0;
+  border-radius: 50%;
+  border: none;
+  background-color: #515151;
+  background-image: url("../icons/file_icon.svg");
+  background-repeat: no-repeat;
+  background-size: 62%;
+  background-position: center;
+  cursor: pointer;
+}
+.file-window-output {
+  height: 1000%;
+  overflow: scroll;
+}
+.file-window-output::-webkit-scrollbar {
+  display: none;
 }
 .chat-window-call span {
   width: 14px;
@@ -289,6 +332,70 @@
 .chat-window-output ul {
   list-style: none;
   padding: 10px;
+}
+.file-window-output h2 {
+  margin-left: 15px;
+}
+.file-window-output ul {
+  list-style: none;
+  padding: 10px;
+}
+.file-window-output ul li {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 20px 5px 7px;
+  cursor: pointer;
+  background-color: #f8f6f3;
+  border-radius: 10px;
+  margin-bottom: 7px;
+}
+.file-window-output ul li p {
+  width: 65%;
+  overflow: hidden;
+  background: linear-gradient(to left, transparent 0%, #232323 15%, #232323 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+  font-size: 17px;
+}
+.file-window-output ul li a {
+  margin: auto 0;
+  height: 25px;
+}
+.file-window-output-extension {
+  width: 40px;
+  height: 40px;
+  margin: auto 0;
+}
+.file-window-output:hover .file-window-output-add {
+  opacity: 1;
+}
+.file-window-output-add {
+  opacity: 0;
+  background-color: transparent !important;
+  border: 2px dashed #ED8000;
+  transition: all .2s;
+}
+.file-window-output-add img {
+  width: 40px;
+  height: 40px;
+  margin: 5px auto;
+}
+.file-window-output-add label {
+  margin: 0 auto;
+  display: flex;
+  cursor: pointer;
+  width: 100%;
+}
+.file-window-output-add form {
+  margin: 0 auto;
+  display: flex;
+  cursor: pointer;
+  width: 100%;
+}
+input[type="file"] {
+  display: none;
 }
 .chat-window-output ul li {
   display: flex;

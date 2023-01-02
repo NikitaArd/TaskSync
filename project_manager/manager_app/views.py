@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
 from django.contrib.auth.views import PasswordResetConfirmView
+from django.core.exceptions import ValidationError
 
 # Local imports
 from .models import (
@@ -23,6 +24,8 @@ from .models import (
         TasksSeq,
         Chat,
         Message,
+        AttachmentFile,
+        ProjectFiles
         )
 
 from .forms import (
@@ -227,19 +230,57 @@ def project_main_page(request, project_uuid):
     tasks = Task.objects.get_by_sequence(tasks_seq=tasks_seq, columns=columns)
     chat = project.chat
     project_messages = Message.objects.filter(chat=chat)
+    project_files = AttachmentFile.objects.filter(project_files_id__project_id=project)
 
     context = {
             'project': project,
             'columns': columns,
             'tasks': tasks,
             'chat': chat,
-            'project_messages': project_messages
+            'project_messages': project_messages,
+            'project_files': project_files,
             }
 
     response = render(request, 'manager_app/project_main_page.html', context)
     response.set_cookie('p_uuid', project.uuid)
 
     return response
+
+@login_required
+def file_upload(request, project_uuid):
+    if request.POST:
+        print(request.FILES)
+        try:
+            project = Project.objects.get(uuid=project_uuid)
+        except (Project.DoesNotExist, ValidationError):
+            return Http404()
+
+        if request.user not in project.memberpool.members.all():
+            return redirect(reverse('projects_menu'))
+        
+        new_file_uploaded = AttachmentFile(source_file=request.FILES['uploaded_file'], project_files_id=ProjectFiles.objects.get(project_id=project), uploaded_by=request.user)
+        new_file_uploaded.save()
+
+        return redirect(request.POST.get('next', '/'))
+    return Http404()
+
+@login_required
+def file_delete(request, project_uuid, file_uuid):
+    try:
+        project = Project.objects.get(uuid=project_uuid)
+    except (Project.DoesNotExist, ValidationError):
+        return Http404()
+    
+    if request.user not in project.memberpool.members.all():
+        return redirect(reverse('projects_menu'))
+
+    try:
+        file_to_delete = AttachmentFile.objects.get(uuid=file_uuid)
+        file_to_delete.delete()
+    except (AttachmentFile.DoesNotExist, ValidationError):
+        return Http404()
+
+    return redirect(project_main_page, project_uuid)
 
 
 class PasswordResetConfirmViewWithErrors(PasswordResetConfirmView):

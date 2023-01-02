@@ -149,6 +149,17 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 # Avatars settings
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+ALLOWED_EXTENSIONS = ('txt', 'docx', 'doc', 'pdf', 'png', 'jpg', 'gif', 'psd', 'ppt', 'xls')
+
+# In bytes
+MAX_FILE_SIZE = 5242880
+MAX_FILE_ERROR_MESSAGE = 'Maksymalna waga pliku 5MB'
+UNKNOWN_EXTENSION = 'unknown'
+
+# Avatars settings
 MEDIA_URL = 'avatar/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/avatars')
 

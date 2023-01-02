@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.postgres.fields import ArrayField
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.core.validators import FileExtensionValidator
 from django.db.models.signals import (
         pre_save,
         post_save,
@@ -16,9 +17,16 @@ from .managers import (
         TaskManager,
         )
 
+def max_file_size_validator(value):
+    file_size = value.size
+
+    if file_size > settings.MAX_FILE_SIZE:
+        return ValidationError(settings.MAX_FILE_ERROR_MESSAGE)
+    return value
+
 
 class Avatar(models.Model):
-   source_image = models.ImageField(blank=False, verbose_name='Obraz żródłowy')
+   source_image = models.ImageField(blank=False, upload_to='avatars/', verbose_name='Obraz żródłowy')
    search_slug = models.CharField(unique=True, max_length=20, blank=False, null=False, verbose_name='Pole wuszikwania')
     
    def __str__(self) -> str:
@@ -234,6 +242,38 @@ class Message(models.Model):
 
     def __str__(self) -> str:
         return '{} | {}'.format(self.chat.project.name, self.message_content[:20])
+
+class ProjectFiles(models.Model):
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE, null=False)
+
+
+class FileExtensionIcon(models.Model):
+    extension = models.CharField(max_length=12, blank=False, null=False, unique=True)
+    icon = models.ImageField(blank=False, null=False, upload_to='project_files/extension_icons/')
+
+    def __str__(self) -> str:
+        return self.extension
+
+
+class AttachmentFile(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, db_index=True)
+    file_name = models.CharField(max_length=120, blank=True)
+    file_extension = models.CharField(max_length=12, blank=True)
+    source_file = models.FileField(blank=False, upload_to='project_files/', validators=[FileExtensionValidator(allowed_extensions=settings.ALLOWED_EXTENSIONS), max_file_size_validator])
+
+    project_files_id = models.ForeignKey(ProjectFiles, on_delete=models.CASCADE)
+    uploaded_by = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
+    extension_icon = models.ForeignKey(FileExtensionIcon, on_delete=models.PROTECT, default=FileExtensionIcon.objects.get(extension=settings.UNKNOWN_EXTENSION).id)
+
+    def save(self, *args, **kwargs):
+        self.file_name = self.source_file.name.split('.')[0].replace('project_files/', '')
+        self.file_extension = self.source_file.name.split('.')[1]
+
+        extention_to_set = FileExtensionIcon.objects.filter(extension=self.file_extension)
+        if extention_to_set:
+            self.extension_icon = extention_to_set.first()
+
+        super().save(*args, **kwargs)
 
 # All Signals
 

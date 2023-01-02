@@ -344,10 +344,25 @@ $(function(){
 
 $(function(){
   $('#chat-window-call').on('click', function(){
+      $('#chat-window').toggleClass('window-higher');
       $('#chat-window').toggleClass('chat-window-active');
       document.getElementById('chat-notification').classList.remove('chat-notification-active')
       var messageBody = document.querySelector('#messages-container-wrapper');
       messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+  })
+})
+
+$(function(){
+  $('#file-window-call').on('click', function(){
+      $('#file-window').toggleClass('window-higher');
+      $('#file-window').toggleClass('file-window-active');
+  })
+})
+
+$(function(){
+  $('#upload-file-input').on('change', function(){
+    console.log('new_file!!!')
+    document.getElementById('upload-file-form').submit();
   })
 })
 

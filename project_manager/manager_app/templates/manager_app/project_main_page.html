@@ -41,6 +41,32 @@
             </div>
         </div>
 
+        <div class="file-window" id="file-window">
+          <button class="file-window-call" id="file-window-call"></button>
+            <div class="file-window-output" id="file-container-wrapper">
+                <h2>Pliki</h2>
+                <ul>
+                    {% for file in project_files %}
+                        <li>
+                            <img src="{{ file.extension_icon.icon.url }}" class="file-window-output-extension">
+                            <p title="{{ file.file_name }}.{{ file.file_extension }} ({{ file.uploaded_by.username }})"><a href="{{ file.source_file.url }}" download>{{ file.file_name }}.{{ file.file_extension }} ({{ file.uploaded_by.username }})</a></p>
+                            <a href="delete_file/{{ file.uuid }}"><img src="{% static 'manager_app/icons/trash.svg' %}"></a>
+                        </li>
+                    {% endfor %}
+                    <li class="file-window-output-add">
+                        <form action="{% url 'file_upload' project.uuid %}" id="upload-file-form" enctype="multipart/form-data" method="post">
+                            {% csrf_token %}
+                            <label class="custom-file-upload">
+                                <input type="file" id="upload-file-input" name="uploaded_file">
+                                <input type="hidden" name="next" value="{{ request.path }}">
+                                <img src="{% static 'manager_app/icons/upload.svg' %}">
+                            </label>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
         <div class="manager-window">        
             <section class="manager-window-input-bar">
                 <button id="delete-select-item"></button>

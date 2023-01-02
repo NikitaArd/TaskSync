@@ -11,6 +11,9 @@ from .models import (
         TasksSeq,
         Chat,
         Message,
+        ProjectFiles,
+        AttachmentFile,
+        FileExtensionIcon,
         )
 
 # User models
@@ -27,3 +30,8 @@ admin.site.register(TasksSeq)
 # Chat models
 admin.site.register(Chat)
 admin.site.register(Message)
+
+# File models
+admin.site.register(ProjectFiles)
+admin.site.register(AttachmentFile)
+admin.site.register(FileExtensionIcon)
