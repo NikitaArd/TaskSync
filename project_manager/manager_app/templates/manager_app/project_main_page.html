@@ -45,6 +45,9 @@
           <button class="file-window-call" id="file-window-call"></button>
             <div class="file-window-output" id="file-container-wrapper">
                 <h2>Pliki</h2>
+                <button id="reload-button" onClick="window.location.reload()">
+                    <img src="{% static 'manager_app/icons/reload.svg' %}" alt="Reload Page">
+                </button>
                 <ul>
                     {% for file in project_files %}
                         <li>

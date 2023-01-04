@@ -359,6 +359,23 @@
   white-space: nowrap;
   font-size: 17px;
 }
+#reload-button {
+  position: absolute;
+  right: 30px;
+  top: 20px;
+  display: flex;
+
+  background-color: transparent;
+  border: none;
+
+  cursor: pointer;
+}
+#reload-button img {
+  width: 20px;
+  height: 20px;
+
+  margin: auto;
+}
 .file-window-output ul li a {
   margin: auto 0;
   height: 25px;

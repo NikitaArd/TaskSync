@@ -296,6 +296,9 @@ def post_save_project_member_creator(sender, **kwargs):
         new_member_pool.save()
         new_member_pool.members.add(kwargs['instance'].owner)
 
+        new_project_files = ProjectFiles(project_id=kwargs['instance'])
+        new_project_files.save()
+
 def post_save_project_chat_creator(sender, **kwargs):
     if kwargs['created']:
         new_chat = Chat(project=kwargs['instance'])
