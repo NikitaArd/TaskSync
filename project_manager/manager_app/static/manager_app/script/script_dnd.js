@@ -436,7 +436,7 @@ function confirm_select(){
 }
 
 $(function(){
-  $('#confirm-select-item').on('click', confirm_select());
+  $('#confirm-select-item').on('click', confirm_select);
   $('#input-select-item').on('keyup', function({key}){
      if(key == 'Enter'){
        confirm_select();
