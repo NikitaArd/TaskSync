@@ -279,7 +279,7 @@ class AttachmentFile(models.Model):
 
 # File signals
 
-def pre_save_file_dispathcer(sender, **kwargs):
+def pre_save_file_dispatcher(sender, **kwargs):
    if not kwargs['instance'].extension_icon:
          try:
             kwargs['instance'].extension_icon = FileExtensionIcon.objects.get(extension=settings.UNKNOWN_EXTENSION)
