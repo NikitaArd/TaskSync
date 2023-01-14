@@ -263,19 +263,28 @@ class AttachmentFile(models.Model):
 
     project_files_id = models.ForeignKey(ProjectFiles, on_delete=models.CASCADE)
     uploaded_by = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
-    extension_icon = models.ForeignKey(FileExtensionIcon, on_delete=models.PROTECT, default=FileExtensionIcon.objects.get(extension=settings.UNKNOWN_EXTENSION).id)
+    extension_icon = models.ForeignKey(FileExtensionIcon, on_delete=models.PROTECT, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.file_name = self.source_file.name.split('.')[0].replace('project_files/', '')
         self.file_extension = self.source_file.name.split('.')[1]
 
-        extention_to_set = FileExtensionIcon.objects.filter(extension=self.file_extension)
-        if extention_to_set:
-            self.extension_icon = extention_to_set.first()
+        extension_to_set = FileExtensionIcon.objects.filter(extension=self.file_extension)
+        if extension_to_set:
+            self.extension_icon = extension_to_set.first()
 
         super().save(*args, **kwargs)
 
 # All Signals
+
+# File signals
+
+def pre_save_file_dispathcer(sender, **kwargs):
+   if not kwargs['instance'].extension_icon:
+         try:
+            kwargs['instance'].extension_icon = FileExtensionIcon.objects.get(extension=settings.UNKNOWN_EXTENSION)
+         except FileExtensionIcon.DoesNotExist:
+             return
 
 # User signals
 def pre_save_user_dispatcher(sender, **kwargs):
@@ -328,3 +337,4 @@ pre_save.connect(pre_save_user_dispatcher, sender=CustomUser)
 pre_delete.connect(pre_delete_task_delete_from_seq, sender=Task)
 post_save.connect(post_save_task_add_to_seq, sender=Task)
 post_save.connect(post_save_column_tasks_seq_creator, sender=Column)
+pre_save.connect(pre_save_file_dispatcher, sender=AttachmentFile)
