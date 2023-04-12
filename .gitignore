@@ -1,4 +1,8 @@
-/project_manager/project_manager/__pycache__
-/project_manager/manager_app/__pycache__
-/project_manager/manager_app/migrations/__pycache__
-/project_manager/media
+project_manager/__pycache__
+manager_app/__pycache__
+manager_app/migrations/__pycache__
+media/
+.env
+venv/
+.DS_Store
+.idea/

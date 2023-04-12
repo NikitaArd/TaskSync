@@ -26,7 +26,7 @@ load_dotenv(find_dotenv())
 SECRET_KEY = os.getenv('SECRET_KEY') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG_STATUS')
+DEBUG = bool(os.getenv('DEBUG_STATUS'))
 
 ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
 
@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'manager_app',
     'widget_tweaks',
 ]
+
+CSRF_TRUSTED_ORIGINS = [os.getenv('CSRF_ORIGINS')]
 
 ASGI_APPLICATION = 'project_manager.asgi.application'
 
@@ -92,11 +94,11 @@ WSGI_APPLICATION = 'project_manager.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USERNAME'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_IP'),
-        'PORT': os.getenv('DB_PORT'),
+        'NAME': os.getenv('PGDATABASE'),
+        'USER': os.getenv('PGUSER'),
+        'PASSWORD': os.getenv('PGPASSWORD'),
+        'HOST': os.getenv('PGHOST'),
+        'PORT': os.getenv('PGPORT'),
     }
 }
 
@@ -158,10 +160,6 @@ ALLOWED_EXTENSIONS = ('txt', 'docx', 'doc', 'pdf', 'png', 'jpg', 'gif', 'psd', '
 MAX_FILE_SIZE = 5242880
 MAX_FILE_ERROR_MESSAGE = 'Maksymalna waga pliku 5MB'
 UNKNOWN_EXTENSION = 'unknown'
-
-# Avatars settings
-MEDIA_URL = 'avatar/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/avatars')
 
 
 DEFAULT_AVATAR = 'slug_avatar_1'
