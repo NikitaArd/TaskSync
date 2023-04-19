@@ -182,6 +182,9 @@ EMAIL_USE_TLS = True
 DEFAULT_TASK_CONTENT = 'Wpisz zadanie'
 DEFAULT_COLUMN_NAME = 'Nowa kolumna'
 
+ADMIN_LOGIN = os.getenv('ADMIN_LOGIN')
+ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
+
 
 WS_ERROR_MESSAGES = {
     'Invalid_data': 'Wprowadzono błędne dane',
