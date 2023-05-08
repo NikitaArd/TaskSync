@@ -1,6 +1,4 @@
-project_manager/__pycache__
-manager_app/__pycache__
-manager_app/migrations/__pycache__
+__pycache__/
 media/
 .env
 venv/
