@@ -50,9 +50,12 @@ CSRF_TRUSTED_ORIGINS = [os.getenv('CSRF_ORIGINS')]
 ASGI_APPLICATION = 'project_manager.asgi.application'
 
 CHANNEL_LAYERS = {
-    'default':{
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',
-    }
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [(os.getenv('REDISHOST'), os.getenv('REDISPORT'))],
+        },
+    },
 }
 
 
