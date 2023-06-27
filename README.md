@@ -1,4 +1,4 @@
-## Django Project Manager  
+## TaskSync
 
 ---
 
