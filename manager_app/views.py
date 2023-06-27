@@ -1,87 +1,84 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.contrib.auth import (
-        authenticate,
-        login,
-        logout,
-        )
+    authenticate,
+    login,
+    logout,
+)
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-
-from django.conf import settings
 
 from django.contrib.auth.views import PasswordResetConfirmView
 from django.core.exceptions import ValidationError
 
 # Local imports
 from .models import (
-        CustomUser,
-        Avatar,
-        Project,
-        MemberPool,
-        Column,
-        Task,
-        TasksSeq,
-        Chat,
-        Message,
-        AttachmentFile,
-        ProjectFiles
-        )
+    CustomUser,
+    Avatar,
+    Project,
+    MemberPool,
+    Column,
+    Task,
+    TasksSeq,
+    Chat,
+    Message,
+    AttachmentFile,
+    ProjectFiles
+)
 
 from .forms import (
-        RegistrationForm,
-        LoginForm,
-        NewPasswordSetForm,
-        ProjectCreateForm,
-        )
+    RegistrationForm,
+    LoginForm,
+    NewPasswordSetForm,
+    ProjectCreateForm,
+)
 from .decorators import (
-        anonymous_required
-        )
+    anonymous_required
+)
 
-def get_error_messages(form) -> dict:
-    error_dict = dict()
-    invalid_field = ''
 
-    for field in form.errors:
-        error_dict[field] = form.errors[field][0]
+def get_error_message_from_form(form) -> dict:
+    invalid_field = [field for field in form.errors.as_data()][0]  # From Python 3.7 dict saves ordering
+    error_message = form.errors[invalid_field][0]
 
-    invalid_field = [x for x in form.errors.as_data()]
+    return {'invalid_field': invalid_field, 'error_message': error_message}
 
-    return {'invalid_field': invalid_field[0], 'error_dict': error_dict}
 
-def main_page(request): 
+def main_page(request):
     return render(request, 'manager_app/title_page.html', {})
+
 
 @anonymous_required
 def registration_page(request):
     form = RegistrationForm
 
     context = {
-            'form': form,
-            }
+        'form': form,
+    }
 
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
 
         if form.is_valid():
-            created_user = form.save() 
+            created_user = form.save()
             login(request, created_user)
             return redirect(reverse('account_info_page'))
 
-        error_messages = get_error_messages(form)
-        
-        context['form'] = form
-        context['invalid_field'] = error_messages['invalid_field']
-        context['error_dict'] = error_messages['error_dict']
+        form_error = get_error_message_from_form(form)
+
+        context['form'] = form  # Sends filled form
+        context['invalid_field'] = form_error['invalid_field']
+        context['error_message'] = form_error['error_message']
 
     return render(request, 'manager_app/registration_page.html', context)
+
 
 @anonymous_required
 def login_page(request):
     form = LoginForm
 
     context = {'form': form}
-    
+
     if request.method == 'POST':
 
         form = LoginForm(request.POST)
@@ -91,22 +88,22 @@ def login_page(request):
             login(request, user)
 
             return redirect(reverse('account_info_page'))
-        
+
         context['form'] = form
         context['invalid_field'] = 'all'
         context['error_dict'] = {'all': 'Wprowadzono błędne dane'}
 
     return render(request, 'manager_app/login_page.html', context)
 
-def logout_page(request):
 
+def logout_page(request):
     logout(request)
 
     return redirect(reverse('login_page'))
 
+
 @login_required
 def account_info_page(request):
-    
     mode = request.GET.get('mode', '')
     avatar_slug = request.GET.get('avatar', '')
 
@@ -121,16 +118,17 @@ def account_info_page(request):
         return redirect(reverse('account_info_page'))
 
     avatars = Avatar.objects.all()
-    avatar_change_url = '{}{}'.format(reverse('account_info_page'), '?mode=change&avatar=') 
+    avatar_change_url = '{}{}'.format(reverse('account_info_page'), '?mode=change&avatar=')
     project_count = Project.objects.filter(memberpool__members__in=str(request.user.id)).count()
 
     context = {
-            'avatars': avatars,
-            'avatar_change_url': avatar_change_url,
-            'project_count': project_count,
-            }
+        'avatars': avatars,
+        'avatar_change_url': avatar_change_url,
+        'project_count': project_count,
+    }
 
     return render(request, 'manager_app/account_info_page.html', context)
+
 
 @login_required
 def projects_menu(request):
@@ -141,11 +139,11 @@ def projects_menu(request):
 
         if form.is_valid():
             new_project = Project(
-                    name=form.cleaned_data['name'],
-                    max_members=form.cleaned_data['max_members'],
-                    owner=request.user,
-                    )
-            
+                name=form.cleaned_data['name'],
+                max_members=form.cleaned_data['max_members'],
+                owner=request.user,
+            )
+
             new_project.save()
 
             return redirect(reverse('projects_menu'))
@@ -157,7 +155,7 @@ def projects_menu(request):
     projects_own = Project.objects.filter(owner=request.user)
 
     if mode == 'sort' and option:
-        
+
         if option == 'own':
             projects = projects_own
         elif option == 'member':
@@ -166,11 +164,12 @@ def projects_menu(request):
             return redirect(reverse('projects_menu'))
 
     context = {
-            'projects': projects,
-            'form': form,
-            }
+        'projects': projects,
+        'form': form,
+    }
 
     return render(request, 'manager_app/projects_menu.html', context)
+
 
 @login_required
 def project_settings(request, project_uuid):
@@ -178,12 +177,12 @@ def project_settings(request, project_uuid):
         project = Project.objects.get(uuid=project_uuid)
     except Project.DoesNotExist:
         return redirect(reverse('projects_menu'))
-    
+
     form = ProjectCreateForm
 
     if request.method == 'POST':
         form = ProjectCreateForm(request.POST)
-   
+
         if form.is_valid():
             name = form.cleaned_data['name']
             max_members = form.cleaned_data['max_members']
@@ -192,16 +191,16 @@ def project_settings(request, project_uuid):
 
             return redirect(reverse('projects_menu'))
 
-    
     members = project.memberpool.members.all()
 
     context = {
-            'project': project,
-            'members': members,
-            'form': form,
-            }
+        'project': project,
+        'members': members,
+        'form': form,
+    }
 
     return render(request, 'manager_app/project_settings.html', context)
+
 
 @login_required
 def project_delete(request, project_uuid):
@@ -214,6 +213,7 @@ def project_delete(request, project_uuid):
         project.delete()
 
     return redirect(reverse('projects_menu'))
+
 
 @login_required
 def project_main_page(request, project_uuid):
@@ -233,18 +233,19 @@ def project_main_page(request, project_uuid):
     project_files = AttachmentFile.objects.filter(project_files_id__project_id=project)
 
     context = {
-            'project': project,
-            'columns': columns,
-            'tasks': tasks,
-            'chat': chat,
-            'project_messages': project_messages,
-            'project_files': project_files,
-            }
+        'project': project,
+        'columns': columns,
+        'tasks': tasks,
+        'chat': chat,
+        'project_messages': project_messages,
+        'project_files': project_files,
+    }
 
     response = render(request, 'manager_app/project_main_page.html', context)
     response.set_cookie('p_uuid', project.uuid)
 
     return response
+
 
 @login_required
 def file_upload(request, project_uuid):
@@ -257,12 +258,15 @@ def file_upload(request, project_uuid):
 
         if request.user not in project.memberpool.members.all():
             return redirect(reverse('projects_menu'))
-        
-        new_file_uploaded = AttachmentFile(source_file=request.FILES['uploaded_file'], project_files_id=ProjectFiles.objects.get(project_id=project), uploaded_by=request.user)
+
+        new_file_uploaded = AttachmentFile(source_file=request.FILES['uploaded_file'],
+                                           project_files_id=ProjectFiles.objects.get(project_id=project),
+                                           uploaded_by=request.user)
         new_file_uploaded.save()
 
         return redirect(request.POST.get('next', '/'))
     return Http404()
+
 
 @login_required
 def file_delete(request, project_uuid, file_uuid):
@@ -270,7 +274,7 @@ def file_delete(request, project_uuid, file_uuid):
         project = Project.objects.get(uuid=project_uuid)
     except (Project.DoesNotExist, ValidationError):
         return Http404()
-    
+
     if request.user not in project.memberpool.members.all():
         return redirect(reverse('projects_menu'))
 
@@ -296,10 +300,9 @@ class PasswordResetConfirmViewWithErrors(PasswordResetConfirmView):
                 context['invalid_field'] = ''
                 context['error_dict'] = {}
             else:
-                error_messages = get_error_messages(form)
+                form_error = get_error_messages(form)
 
-                context['invalid_field'] = error_messages['invalid_field']
-                context['error_dict'] = error_messages['error_dict']
+                context['invalid_field'] = form_error['invalid_field']
+                context['error_message'] = form_error['error_message']
 
         return context
-

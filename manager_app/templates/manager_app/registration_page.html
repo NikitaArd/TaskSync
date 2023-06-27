@@ -32,7 +32,7 @@
                     <div class="field">
                         {% if invalid_field == 'email' %}
                             {% render_field form.email class+='field-invalid' %}
-                            <label for="email" class="field-label">{{ error_dict.email }}</label>
+                            <label for="email" class="field-label">{{ error_message }}</label>
                         {% else %}    
                             {{ form.email }}
                             <label for="email" class="field-label">{{ form.email.label }}</label>
@@ -42,7 +42,7 @@
                     <div class="field field-mini">
                         {% if invalid_field == 'password2'%}
                             {% render_field form.password1 class+='field-invalid' %}
-                            <label for="password1" class="field-label">{{ error_dict.password2 }}</label>
+                            <label for="password1" class="field-label">{{ error_message }}</label>
                          {% else %}
                             {{ form.password1 }}
                             <label for="password1" class="field-label">{{ form.password1.label }}</label>
