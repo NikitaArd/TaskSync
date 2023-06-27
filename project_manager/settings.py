@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'manager_app',
     'widget_tweaks',
+    'django_cleanup',
 ]
 
 CSRF_TRUSTED_ORIGINS = [os.getenv('CSRF_ORIGINS')]
