@@ -1,0 +1,653 @@
+* {
+  outline: none !important;
+}
+
+h1, h2, h3, p {
+  color: #515151;
+}
+
+a:-webkit-any-link {
+  color: inherit !important;
+  text-decoration: none;
+}
+
+body {
+  background-color: #FFFAF3;
+  font-family: "Mukta";
+}
+
+header {
+  display: flex;
+  width: 100%;
+  height: 70px;
+  border-bottom: #ED8000 2px solid;
+}
+header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #515151;
+  text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.25);
+  margin: auto;
+}
+header .logo {
+  position: absolute;
+  display: flex;
+  top: 15px;
+  left: 15px;
+  width: 144px;
+  height: 144px;
+  background-color: #FFFDFB;
+  border-radius: 50%;
+  box-shadow: 1px 1px 25px -4px rgba(0, 0, 0, 0.25);
+}
+header .logo img {
+  margin: auto auto;
+}
+
+.main {
+  height: 100%;
+  width: 100%;
+}
+.main-bg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  height: 70%;
+}
+.main-title {
+  position: absolute;
+  right: 15%;
+  top: 18%;
+  font-weight: 300;
+  font-size: 42px;
+  text-align: right;
+  width: 40%;
+}
+.main-buttons {
+  position: absolute;
+  bottom: 25%;
+  right: 20%;
+}
+.main-buttons button {
+  margin: 10px;
+}
+.main-page {
+  display: flex;
+  justify-content: center;
+}
+
+#menu {
+  position: fixed;
+  right: -240px;
+  width: 300px;
+  height: 100%;
+  top: 0;
+  z-index: 9999;
+}
+
+.menu-open {
+  right: 0 !important;
+}
+
+#menuContent {
+  position: absolute;
+  left: 60px;
+  width: 250px;
+  height: 100%;
+  padding-top: 80px;
+  background: #F8F3EC;
+  box-shadow: -4px 0px 30px -10px rgba(0, 0, 0, 0.25);
+}
+
+#menuContent a {
+  display: flex;
+  margin-left: 30px;
+  font-size: 23px;
+  line-height: 40px;
+  text-decoration: none;
+  color: #83817F;
+}
+
+#menu {
+  transition: all 0.3s ease;
+}
+
+#menuToggle {
+  position: absolute;
+  top: 50%;
+  left: -15px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.menuToggleRotate {
+  transform: rotate(-180deg);
+}
+
+.user {
+  width: 100%;
+  margin-top: 150px;
+  text-align: center;
+}
+.user-avatar {
+  position: relative;
+  margin: 0 auto;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: #f5f4f0;
+  box-shadow: 3px 3px 40px -10px rgba(0, 0, 0, 0.25);
+}
+.user-avatar img {
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+}
+.user-avatar button {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 45px;
+  height: 45px;
+  background-color: #FFFFFF;
+  background-image: url("../icons/edit.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 50%;
+  border: 1px solid #DBDBDB;
+  cursor: pointer;
+}
+.user-information {
+  display: inline-block;
+  text-align: left;
+  margin-top: 85px;
+}
+.user-information p {
+  color: #A6A4A0;
+  font-weight: 500;
+  font-size: 24px;
+}
+.user-information span {
+  color: #515151;
+  font-weight: 500;
+}
+
+.projects {
+  width: 52%;
+  margin: 0 auto;
+}
+.projects-designation {
+  display: flex;
+  justify-content: left;
+  margin-top: 100px;
+}
+.projects-designation section {
+  display: flex;
+  margin-right: 60px;
+}
+.projects-designation div {
+  min-width: 30px;
+  min-height: 30px;
+  margin: auto;
+  box-shadow: 3px 3px 20px -5px rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+}
+.projects-designation a {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 500;
+  text-decoration: none;
+  color: #515151;
+  margin-left: 15px;
+}
+.projects-organizer {
+  background-color: #A4DCFB;
+}
+.projects-member {
+  background-color: #FBE8A4;
+}
+.projects-all {
+  background-color: #BCEDBC;
+}
+.projects-menu {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  margin-top: 70px;
+}
+.projects-card-wrapper {
+  width: 300px;
+  height: 175px;
+  position: relative;
+  margin-top: 30px;
+  margin: 30px auto 0 auto;
+  transition: all 0.5s;
+}
+.projects-card-wrapper section {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: 240px;
+  height: 65px;
+  padding: 90px 30px 0 30px;
+  background-color: #FBF9F7;
+  border-radius: 32px;
+  transition: all 0.5s;
+}
+.projects-card-wrapper section button {
+  width: 100%;
+  font-size: 20px;
+  color: #515151;
+  text-align: left;
+  margin: auto;
+  background-color: #FBF9F7;
+  cursor: pointer;
+  border-radius: 50px;
+  border: none;
+}
+.projects-card-wrapper section button:hover {
+  background-color: #eeeae5;
+}
+.projects-card-wrapper section img {
+  margin-top: -1px;
+  margin-right: 20px;
+  margin-left: 15px;
+  vertical-align: middle;
+}
+.projects-card-wrapper-active {
+  height: 235px;
+}
+.projects-card-owner {
+  border-right: 4px solid #A4DCFB;
+}
+.projects-card-member {
+  border-right: 4px solid #FBE8A4;
+}
+.projects-card {
+  position: relative;
+  width: 270px;
+  height: 145px;
+  padding: 15px;
+  z-index: 3;
+  background: #E9E5DF;
+  box-shadow: 3px 3px 30px -10px rgba(0, 0, 0, 0.25);
+  border-radius: 32px;
+}
+.projects-card h1 {
+  font-size: 26px;
+  line-height: 165%;
+  margin: 0;
+  margin-left: 10px;
+
+  width: 85%;
+  vertical-align: middle;
+  overflow: hidden;
+  background: linear-gradient(to left, transparent 0%, #232323 15%, #232323 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+}
+.projects-card p {
+  font-size: 21px;
+  color: rgba(81, 81, 81, 0.9019607843);
+  line-height: 165%;
+  margin: 0;
+  margin-left: 20px;
+}
+.projects-card div {
+  width: 42px;
+  cursor: pointer;
+  margin: 10px auto;
+}
+.projects-add {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.projects-add img {
+  margin: auto;
+  cursor: pointer;
+}
+.projects-card-active {
+  opacity: 1;
+  transform: translateY(51%);
+  box-shadow: 3px 3px 30px -10px rgba(0, 0, 0, 0.25);
+}
+
+@media only screen and (max-width: 1600px) {
+  .projects-menu {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media only screen and (max-width: 1300px) {
+  .projects-menu {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+.dialog-avatar-change {
+  position: relative;
+  margin: auto;
+  width: 720px;
+  height: 400px;
+  background-color: #FFFAF3;
+  border: 2px solid #CBBEAC;
+  border-radius: 30px;
+  text-align: center;
+}
+.dialog-avatar-change h1 {
+  margin-top: 25px;
+  font-size: 24px;
+  color: #515151;
+  font-weight: 600;
+}
+.dialog-avatar-change .avatars {
+  width: 85%;
+  margin: 95px auto;
+  display: flex;
+  justify-content: space-between;
+}
+.dialog-avatar-change .avatars img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  box-shadow: 3px 3px 40px -10px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+.dialog-avatar-change button {
+  background-color: #F3A549;
+  color: #1B1B1B;
+  padding: 18px 40px;
+}
+.dialog-project-create {
+  position: relative;
+  margin: auto;
+  width: 500px;
+  height: 460px;
+  background-color: #FFFAF3;
+  border: 2px solid #CBBEAC;
+  border-radius: 30px;
+  text-align: center;
+}
+.dialog-project-create h1 {
+  margin-top: 25px;
+  font-size: 24px;
+  font-weight: 600;
+}
+.dialog-project-create h3 {
+  text-align: left;
+  padding-left: 12%;
+  font-size: 21px;
+  font-weight: 500;
+}
+.dialog-project-create button {
+  margin-top: 30px;
+  background-color: #F3A549;
+}
+.dialog-project-settings {
+  position: relative;
+  margin: auto;
+  width: 900px;
+  height: 480px;
+  background-color: #FFFAF3;
+  border: 2px solid #CBBEAC;
+  border-radius: 20px;
+  text-align: center;
+}
+.dialog-project-settings h1 {
+  margin-top: 25px;
+  font-size: 24px;
+  font-weight: 600;
+}
+.dialog-project-settings section {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin: 40px auto 0 auto;
+}
+.dialog-project-settings-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: 50px auto 0 auto;
+}
+.dialog-project-settings-main {
+  width: 48%;
+}
+.dialog-project-settings-main div {
+  width: 90%;
+}
+.dialog-project-settings-main h3 {
+  text-align: left;
+}
+.dialog-project-settings-main section {
+  margin-top: 40px;
+}
+.dialog-project-settings-user {
+  width: 48%;
+  height: 360px;
+  overflow: scroll;
+  padding: 5px;
+}
+.dialog-project-settings-user::-webkit-scrollbar {
+  width: 5px;
+}
+.dialog-project-settings-user::-webkit-scrollbar-thumb {
+  width: 3px;
+  background-color: #CBBEAC;
+  border-radius: 50px;
+}
+.dialog-project-settings-user-item {
+  display: flex;
+  justify-content: space-between;
+  background-color: #F7F1E9;
+  padding: 5px 5% 5px 8%;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+.dialog-project-settings-user-item span {
+  width: 25px;
+  height: 25px;
+  padding: 8px;
+  background-color: #FFFDFB;
+  box-shadow: 3px 3px 20px -4px rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  margin: auto 0;
+}
+.dialog-project-settings-user-item span img {
+  width: inherit;
+  height: inherit;
+}
+.dialog-project-settings-user-item p {
+  width: 75%;
+  text-align: left;
+}
+.dialog-project-settings-user-item button {
+  width: 21px;
+  height: 21px;
+  padding: 0;
+  border: none;
+  background-color: none;
+  background-image: url("../icons/close.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: auto 0;
+  opacity: 0;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.dialog-project-settings-user-item button img {
+  width: inherit;
+  width: inherit;
+}
+.dialog-project-settings-user-item input {
+  background-color: transparent;
+  -webkit-appearance: none;
+  border: none;
+  height: 80%;
+  width: 80%;
+  margin: 7px 0;
+}
+.dialog-project-settings-user-form {
+  display: none;
+}
+.dialog-project-settings-user-item:hover button {
+  opacity: 1;
+}
+.dialog-project-settings-user-add {
+  border: 2px dashed #ED8000;
+  border-radius: 5px;
+  padding: 15px 5% 15px 8%;
+  opacity: 0;
+  display: flex;
+  transition: all 0.4s;
+  cursor: pointer;
+}
+.dialog-project-settings-user-add img {
+  margin: auto auto;
+}
+.dialog-project-settings-user-add:hover {
+  opacity: 1;
+}
+
+#add-user-to-project {
+  background-image: url("../icons/accept.svg") !important;
+}
+
+.delete-button {
+  background-color: #F35D49;
+  box-shadow: 5px 5px 30px -7px #F35D49;
+  transition: all 0.5s;
+}
+
+.delete-button:hover {
+  box-shadow: 5px 5px 30px -3px #F35D49;
+}
+
+.dialog-auth-title h1 {
+  font-size: 23px;
+  font-weight: 500;
+  line-height: 60px;
+  color: #515151;
+}
+.dialog-auth-title a {
+  text-decoration: none;
+  font-size: 20px;
+  color: #747371;
+}
+
+.dialog-registration {
+  width: 100%;
+  margin: auto auto;
+}
+.dialog-registration-title {
+  width: 390px;
+  text-align: center;
+  margin: 0 auto;
+  border-radius: 10px;
+  background-color: #FFFAF3;
+}
+.dialog-registration form {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1115px;
+  margin: 0 auto;
+}
+.dialog-registration form h2 {
+  margin-top: 30px;
+  font-size: 26px;
+  font-weight: 500;
+  color: #515151;
+}
+.dialog-registration-person-data {
+  width: 550px;
+  max-height: 375px;
+  text-align: center;
+  background-color: #FFFAF3;
+  border-radius: 15px;
+}
+.dialog-registration-person-data div {
+  margin-top: 60px;
+}
+.dialog-registration-accounts-data {
+  width: 550px;
+  text-align: center;
+  background-color: #FFFAF3;
+  border-radius: 15px;
+}
+.dialog-registration-accounts-data div {
+  margin-top: 60px;
+}
+.dialog-registration-accounts-data button {
+  margin: 60px 0 40px 0;
+}
+
+.registration-button {
+  background-color: #F3A549;
+  color: #1B1B1B;
+  box-shadow: 5px 5px 30px -7px #F3A549;
+  transition: all 0.3s;
+}
+
+.registration-button:hover {
+  box-shadow: 5px 5px 30px -3px #F3A549;
+}
+
+.dialog-login {
+  width: 550px;
+  min-height: 350px;
+  text-align: center;
+  background-color: #FFFAF3;
+  border: 2px solid #CBBEAC;
+  border-radius: 15px;
+  margin: auto auto;
+}
+.dialog-login img {
+  width: 27%;
+  height: 27%;
+}
+.dialog-login form div {
+  margin-top: 50px;
+}
+.dialog-login form p {
+  font-size: 16px;
+  font-weight: 400;
+  color: #AFADAB;
+  margin: 5px;
+}
+.dialog-login form p a {
+  text-decoration: none;
+  color: inherit;
+}
+.dialog-login form button {
+  margin: 60px 0 40px 0;
+}
+
+.login-button {
+  background-color: #7F81D0;
+  color: #F8F8F8;
+  box-shadow: 5px 5px 30px -7px #7F81D0;
+  transition: all 0.3s;
+}
+
+.login-button:hover {
+  box-shadow: 5px 5px 30px -3px #7F81D0;
+}
+
+@media only screen and (max-width: 1100px) {
+  .dialog-registration form {
+    display: block !important;
+    max-width: 550px !important;
+  }
+}
+.avatars-active {
+  outline: 4px solid #7AC8EA !important;
+  outline-offset: -4px;
+}
