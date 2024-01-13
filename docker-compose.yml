@@ -16,13 +16,14 @@ services:
     build: ./project_manager
 
     # command: gunicorn project_manager.asgi:application -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8000
+    # daphne -b 0.0.0.0 -p 8000 project_manager.asgi:application
     # command: python manage.py runserver 0.0.0.0:8000
+    # gunicorn project_manager.wsgi:application --bind 0.0.0.0:8000 --error-logfile '-'
     command: sh -c "python manage.py makemigrations &&
       python manage.py migrate &&
       python manage.py default_admin &&
       python manage.py runserver 0.0.0.0:8000
       "
-    # command: uvicorn project_manager.asgi:application --host 0.0.0.0 --port 8000
 
     volumes:
       - staticfiles:/project_manager/staticfiles

@@ -19,6 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(find_dotenv())
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -34,16 +35,17 @@ ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
 # Application definition
 
 INSTALLED_APPS = [
-    'channels',
+    'manager_app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'manager_app',
     'widget_tweaks',
     'django_cleanup',
+    'daphne',
+    'channels',
 ]
 
 CSRF_TRUSTED_ORIGINS = [os.getenv('CSRF_ORIGINS')]
