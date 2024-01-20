@@ -7,7 +7,7 @@ services:
       - mediafiles:/www/media
 
     ports:
-     - 80:80
+     - $NGINX_EXPOSE_PORT:80
 
     links:
      - app
