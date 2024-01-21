@@ -18,7 +18,7 @@ Introducing TaskSync, a simple and intuitive platform tailored for small teams a
 
 ## 🖼️ Screenshots/Demo
 
-**comming soon...**
+![Gif preview](README_static/demo.gif)
 
 ## 💻 Usage
 
