@@ -22,7 +22,7 @@ Introducing TaskSync, a simple and intuitive platform tailored for small teams a
 
 ## 💻 Usage
 
-Project is available under this URL: *URl Comming Soon*
+Access to the project is available through this URL: [tasksync.nikita-smolenskyi.pl](https://tasksync.nikita-smolenskyi.pl)
 
 ## 🌱 Contribution Guidelines
 
